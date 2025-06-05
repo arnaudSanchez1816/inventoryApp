@@ -1,0 +1,29 @@
+{
+  "name": "inventoryapp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "node --watch ./bin/www",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "debug": "^4.4.1",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "http-errors": "^2.0.0",
+    "morgan": "^1.10"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
+    "stylelint": "^16.20.0",
+    "stylelint-config-standard": "^38.0.0"
+  }
+}
