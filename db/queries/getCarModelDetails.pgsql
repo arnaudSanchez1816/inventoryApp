@@ -4,7 +4,7 @@ WITH get_model AS (
     m.year,
     m.constructor_id
     FROM models AS m
-    WHERE m.id = 3
+    WHERE m.id = $1
 ),
 get_powertrains_trims AS (
     SELECT powertrains.*, array_agg(trims) as compatible_trims
