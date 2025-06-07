@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+    <%- include('partials/head.ejs') %>
+    <body>
+        <header>
+            <h1>Car inventory app</h1>
+        </header>
+        <main>
+            <h2>Car models</h2>
+            <ul>
+              <% locals.models.forEach((model) => { %>
+                <li>
+                  <a href="/cars/<%= model.id %>"><%= model.constructor.name %> - <%= model.name %></a>
+                </li>
+              <% }) %>
+            </ul>
+            <h3>Constructors</h3>
+            <ul>
+              <% locals.constructors.forEach((constructor) => { %>
+                <li>
+                  <a href="/constructors/<%= constructor.id %>"><%= constructor.name %></a>
+                </li>
+              <% }) %>
+            </ul>
+        </main>
+    </body>
 </html>

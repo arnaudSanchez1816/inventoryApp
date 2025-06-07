@@ -36,7 +36,10 @@ exports.getConstructor = [
             throw createHttpError(404, "Constructor not found")
         }
 
-        res.json(constructorDetails)
+        res.render("constructor", {
+            title: "Auto Inventory",
+            constructor: constructorDetails,
+        })
     },
 ]
 

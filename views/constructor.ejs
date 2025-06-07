@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <%- include('partials/head.ejs') %>
+    <body>
+        <header>
+            <span>Constructor</span>
+            <h1><%= constructor.name %></h1>
+        </header>
+        <main>
+            <div>
+                <h2>Country</h2>
+                <p><%= constructor.country %></p>
+            </div>
+            <img src="<%= constructor.logo_path %>" alt="<%= constructor.name %> logo">
+            <h3>Car models</h3>
+            <ul>
+              <% constructor.models.forEach((model) => { %>
+                <li>
+                  <a href="/cars/<%= model.id %>"><%= model.name %></a>
+                </li>
+              <% }) %>
+            </ul>
+        </main>
+    </body>
+</html>

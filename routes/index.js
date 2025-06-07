@@ -1,9 +1,19 @@
-var express = require('express');
-var router = express.Router();
+var express = require("express")
+var router = express.Router()
+const db = require("../db/queries")
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get("/", async (req, res) => {
+    const [carModels, constructors] = await Promise.all([
+        db.getCarModels(),
+        db.getConstructors(),
+    ])
 
-module.exports = router;
+    res.render("index", {
+        title: "Auto Inventory",
+        models: carModels,
+        constructors: constructors,
+    })
+})
+
+module.exports = router
