@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS trim_powertrain_compatibilities (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   trim_id INTEGER,
   powertrain_id INTEGER,
-  CONSTRAINT fk_trim FOREIGN KEY (trim_id) REFERENCES trims(id),
-  CONSTRAINT fk_powertrain FOREIGN KEY (powertrain_id) REFERENCES powertrains(id)
+  CONSTRAINT fk_trim FOREIGN KEY (trim_id) REFERENCES trims(id) ON DELETE CASCADE,
+  CONSTRAINT fk_powertrain FOREIGN KEY (powertrain_id) REFERENCES powertrains(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS cars (
