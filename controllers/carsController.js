@@ -1,4 +1,9 @@
-const { param, validationResult, matchedData } = require("express-validator")
+const {
+    param,
+    validationResult,
+    matchedData,
+    body,
+} = require("express-validator")
 const createHttpError = require("http-errors")
 const { getCarModels, getCarModelDetails } = require("../db/queries")
 
@@ -28,3 +33,24 @@ exports.getCarModels = [
         res.json(models)
     },
 ]
+
+exports.getNewCarModel = (req, res) => {
+    res.send("GET new car model")
+}
+
+const postNewCarModelValidation = []
+
+exports.postNewCarModel = [
+    postNewCarModelValidation,
+    (req, res) => {
+        res.send("POST new car model")
+    },
+]
+
+exports.postNewCarPowertrain = (req, res) => {
+    res.send("POST new car powertrain")
+}
+
+exports.postNewCarTrim = (req, res) => {
+    res.send("POST new car trim")
+}

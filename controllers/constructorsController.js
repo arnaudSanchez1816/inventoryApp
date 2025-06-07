@@ -28,3 +28,16 @@ exports.getConstructors = async (req, res) => {
 
     res.json(constructors)
 }
+
+exports.getNewConstructor = (req, res) => {
+    res.send("GET new constructor")
+}
+
+const postNewConstructorValidation = []
+
+exports.postNewConstructor = [
+    postNewConstructorValidation,
+    (req, res) => {
+        res.send("POST new constructor")
+    },
+]
