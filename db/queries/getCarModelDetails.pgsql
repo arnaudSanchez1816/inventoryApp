@@ -1,0 +1,29 @@
+WITH get_model AS (
+    SELECT m.id, 
+    m.name, 
+    m.year,
+    m.constructor_id
+    FROM models AS m
+    WHERE m.id = 3
+),
+get_powertrains_trims AS (
+    SELECT powertrains.*, array_agg(trims) as compatible_trims
+    FROM powertrains
+    JOIN trim_powertrain_compatibilities on trim_powertrain_compatibilities.powertrain_id = powertrains.id
+    JOIN trims on trims.id = trim_powertrain_compatibilities.trim_id
+    JOIN get_model AS model_details ON model_details.id = powertrains.model_id
+    GROUP BY powertrains.id
+),
+aggregate_powertrains AS (
+    SELECT get_model.*, array_agg(get_powertrains_trims) powertrains
+    FROM get_model
+    JOIN get_powertrains_trims ON get_model.id = get_powertrains_trims.model_id
+    GROUP BY get_model.id, get_model.name, get_model.year, get_model.constructor_id
+),
+get_constructor AS (
+    SELECT m.id, m.name, m.year, json_build_object('id', c.id, 'name', c.name, 'country', c.country) constructor, m.powertrains
+    FROM aggregate_powertrains as m
+    JOIN constructors AS c ON m.constructor_id = c.id
+)
+
+SELECT row_to_json(get_constructor) as results FROM get_constructor

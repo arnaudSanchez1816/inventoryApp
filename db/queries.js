@@ -25,4 +25,32 @@ async function getConstructorDetails(id) {
     return rows[0].results
 }
 
-module.exports = { getConstructors, getConstructorDetails }
+async function getCarModels() {
+    const { rows } = await db.query(
+        "SELECT id, name, year, constructor_id FROM models"
+    )
+
+    return rows
+}
+
+async function getCarModelDetails(id) {
+    const sqlString = await fs.readFile(
+        path.join(__dirname, "queries/getCarModelDetails.pgsql"),
+        "utf-8"
+    )
+    const { rows } = await db.query(sqlString, [id])
+
+    if (rows.length <= 0) {
+        return null
+    }
+    console.log(rows[0])
+
+    return rows[0].results
+}
+
+module.exports = {
+    getConstructors,
+    getConstructorDetails,
+    getCarModels,
+    getCarModelDetails,
+}
