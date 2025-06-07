@@ -1,15 +1,14 @@
 const { param, validationResult, matchedData } = require("express-validator")
-const createHttpError = require("http-errors")
-const { getConstructorDetails } = require("../db/queries")
+const { getConstructorDetails, getConstructors } = require("../db/queries")
 
 const getConstructorValidation = [param("id").isInt({ min: 0 })]
 
 exports.getConstructor = [
     getConstructorValidation,
-    async (req, res) => {
+    async (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            throw createHttpError(404, "Constructor not found")
+            return next()
         }
 
         const { id } = matchedData(req)
@@ -19,3 +18,9 @@ exports.getConstructor = [
         res.json(constructorDetails)
     },
 ]
+
+exports.getConstructors = async (req, res) => {
+    const constructors = await getConstructors()
+
+    res.json(constructors)
+}
