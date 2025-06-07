@@ -21,7 +21,7 @@ aggregate_powertrains AS (
     GROUP BY get_model.id, get_model.name, get_model.year, get_model.constructor_id
 ),
 get_constructor AS (
-    SELECT m.id, m.name, m.year, json_build_object('id', c.id, 'name', c.name, 'country', c.country) constructor, m.powertrains
+    SELECT m.id, m.name, m.year, json_build_object('id', c.id, 'name', c.name, 'country', c.country, 'logo_path', c.logo_path) constructor, m.powertrains
     FROM aggregate_powertrains as m
     JOIN constructors AS c ON m.constructor_id = c.id
 )

@@ -7,7 +7,8 @@ const SQL = `
 CREATE TABLE IF NOT EXISTS constructors (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name VARCHAR ( 255 ),
-  country VARCHAR ( 255 )
+  country VARCHAR ( 255 ),
+  logo_path VARCHAR( 255)
 );
 
 CREATE TABLE IF NOT EXISTS models (
