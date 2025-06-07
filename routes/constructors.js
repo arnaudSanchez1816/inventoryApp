@@ -2,7 +2,7 @@ var express = require("express")
 const {
     getConstructor,
     getConstructors,
-} = require("../controllers/constructorController")
+} = require("../controllers/constructorsController")
 var router = express.Router()
 
 router.get("/:id", getConstructor)

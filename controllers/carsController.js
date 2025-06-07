@@ -1,16 +1,27 @@
 const { param, validationResult, matchedData } = require("express-validator")
 const createHttpError = require("http-errors")
+const { getCarModels } = require("../db/queries")
 
 const carModelValidation = [param("id").isInt({ min: 0 })]
 
 exports.getCarModel = [
     carModelValidation,
-    (req, res) => {
+    (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            throw createHttpError(404, "Car model not found")
+            return next()
         }
         const { id } = matchedData(req)
+
+        await
+
         res.send("GET Car model : " + id)
+    },
+]
+
+exports.getCarModels = [
+    async (req, res) => {
+        const models = await getCarModels()
+        res.json(models)
     },
 ]
