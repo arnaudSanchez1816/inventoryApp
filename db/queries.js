@@ -106,8 +106,8 @@ async function searchConstructors(name) {
     const { rows } = await db.query(
         `SELECT *
         FROM constructors 
-        ORDER BY name
-        WHERE name ILIKE '%$1%'`,
+        WHERE name ILIKE '%' || $1 || '%'
+        ORDER BY name`,
         [name]
     )
     rows.forEach((row) => {
@@ -121,13 +121,10 @@ async function searchCarModels(name) {
     const { rows } = await db.query(
         `SELECT *
         FROM models 
-        ORDER BY name
-        WHERE name ILIKE '%$1%'`,
+        WHERE name ILIKE '%' || $1 || '%'
+        ORDER BY name`,
         [name]
     )
-    rows.forEach((row) => {
-        convertConstructorLogoPath(row)
-    })
 
     return rows
 }
