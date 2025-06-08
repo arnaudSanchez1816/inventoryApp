@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <%- include('partials/head.ejs') %>
+    <body>
+        <header>
+            <a href="/">Home</a>
+            <div>
+                <p>
+                    <img src="<%= constructor.logo_path %>" alt="<%= constructor.name %> logo" width="60" height="60">
+                    <a href="/constructors/<%= constructor.id %>"><%= constructor.name %></a>
+                </p>
+                <h1><%= model.name %></h1>
+                <p><%= model.year %></p>
+            </div>
+        </header>
+        <main>
+            <div>
+                <h2>Configurations in inventory</h2>
+                <ul>
+                    <% cars.forEach((car) => { %>
+                        <li>
+                            <p><%= car.name %></p>
+                            <p>Price : <%= car.price %></p>
+                            <p>Stock : <%= car.stock %></p>
+                            <button type="button">Edit</button>
+                        </li>
+                    <% }) %>
+                </ul>
+                <button type="button">Add configuration</button>
+            </div>
+            <div>
+                <h2>Trims</h2>
+                <ul>
+                    <% trims.forEach((trim) => { %>
+                      <li>
+                        <div>
+                            <p><%= trim.name || "Base" %></p>
+                            <button type="button">Edit</button>
+                            <button type="button">Delete</button>
+                        </div>
+                      </li>
+                    <% }) %>
+                </ul>
+                <button type="button">Add trim</button>
+            </div>
+            <h2>Powertrains</h2>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Engine Code</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Displacement</th>
+                            <th scope="col">Power</th>
+                            <th scope="col">Torque</th>
+                            <th scope="col">Configuration</th>
+                            <th scope="col">Transmission</th>
+                            <th scope="col">Drivetrain</th>
+                            <th scope="col">Compatible trims</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% powertrains.forEach((pt) => { %>
+                            <tr>
+                                <th scope="row"><%= pt.name %></th>
+                                <td><%= pt.engine_code %></td>
+                                <td><%= pt.type %></td>
+                                <td><%= pt.displacement %> cc</td>
+                                <td><%= pt.power %> hp</td>
+                                <td><%= pt.torque %> N⋅m</td>
+                                <td><%= pt.engine_layout %></td>
+                                <td><%= pt.transmission %></td>
+                                <td><%= pt.drivetrain %></td>
+                                <td>
+                                    <% pt.compatible_trims.forEach((t, index) => {%>
+                                        <% const trim = trims.filter((item) => item.id === t)[0] %>
+                                        <%= `${(index > 0 ? ", " : "")}${trim.name || "Base"}` %>
+                                    <% }) %>
+                                </td>
+                                <td><button type="button">Edit</button></td>
+                                <td><button type="button">Delete</button></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+                <button type="button">Add powertrain</button>
+            </div>
+        </main>
+    </body>
+</html>

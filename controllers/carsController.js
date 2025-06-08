@@ -5,7 +5,7 @@ const {
     body,
 } = require("express-validator")
 const createHttpError = require("http-errors")
-const { getCarModels, getCarModelDetails } = require("../db/queries")
+const { getCarModels, getCarModelDetails, getCars } = require("../db/queries")
 
 const carModelIdParamValidation = [param("id").isInt({ min: 0 })]
 const trimIdParamValidation = [param("trimId").isInt({ min: 0 })]
@@ -35,12 +35,23 @@ exports.getCarModel = [
         }
         const { id } = matchedData(req)
 
-        const modelDetails = await getCarModelDetails(id)
+        const [modelDetails, modelCars] = await Promise.all([
+            getCarModelDetails(id),
+            getCars(id),
+        ])
+
         if (!modelDetails) {
             throw createHttpError(404, "Car model not found")
         }
 
-        res.json(modelDetails)
+        res.render("car", {
+            title: "Auto inventory",
+            model: modelDetails,
+            cars: modelCars,
+            constructor: modelDetails.constructor,
+            powertrains: modelDetails.powertrains,
+            trims: modelDetails.trims,
+        })
     },
 ]
 

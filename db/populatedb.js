@@ -42,36 +42,37 @@ CREATE TABLE IF NOT EXISTS powertrains (
 );
 
 CREATE TABLE IF NOT EXISTS trim_powertrain_compatibilities (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   trim_id INTEGER,
   powertrain_id INTEGER,
+  PRIMARY KEY (trim_id, powertrain_id),
   CONSTRAINT fk_trim FOREIGN KEY (trim_id) REFERENCES trims(id) ON DELETE CASCADE,
   CONSTRAINT fk_powertrain FOREIGN KEY (powertrain_id) REFERENCES powertrains(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS cars (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   price DECIMAL(9),
   model_id INTEGER,
   trim_id INTEGER,
   powertrain_id INTEGER,
+  PRIMARY KEY (model_id, trim_id, powertrain_id),
   CONSTRAINT fk_model FOREIGN KEY (model_id) REFERENCES models(id),
   CONSTRAINT fk_trim FOREIGN KEY (trim_id) REFERENCES trims(id),
   CONSTRAINT fk_powertrain FOREIGN KEY (powertrain_id) REFERENCES powertrains(id)
 );
 
 CREATE TABLE IF NOT EXISTS inventory (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   stock INTEGER,
-  car_id INTEGER,
-  CONSTRAINT kf_car FOREIGN KEY (car_id) REFERENCES cars(id)
+  model_id INTEGER,
+  trim_id INTEGER,
+  powertrain_id INTEGER,
+  CONSTRAINT fk_car FOREIGN KEY (model_id, trim_id, powertrain_id) REFERENCES cars(model_id, trim_id, powertrain_id)
 );
 
-INSERT INTO constructors (name, country) 
+INSERT INTO constructors (name, country, logo_path) 
 VALUES
-  ('Ferrari', 'Italy'),
-  ('BMW', 'Germany'),
-  ('Renault', 'France');
+  ('Ferrari', 'Italy', 'Ferrari.svg'),
+  ('BMW', 'Germany', 'BMW.svg'),
+  ('Renault', 'France', 'Renault.svg');
 
 INSERT INTO models (name, year, constructor_id) 
 VALUES
@@ -135,14 +136,23 @@ VALUES
   (22200, 3, 6, 6),
   (25000, 3, 7, 6);
 
-INSERT INTO inventory (stock, car_id) 
+INSERT INTO inventory (stock, model_id, trim_id, powertrain_id) 
 VALUES
-  (1, 1),
-  (10, 2),
-  (8, 3),
-  (6, 4),
-  (23, 9),
-  (16, 11);
+  (2, 1, 1, 1),
+  (20, 2, 2, 2),
+  (14, 2, 3, 2),
+  (24, 2, 2, 3),
+  (17, 2, 3, 3),
+  (21, 2, 2, 4),
+  (11, 2, 3, 4),
+  (240, 3, 4, 5),
+  (198, 3, 4, 6),
+  (174, 3, 4, 7),
+  (195, 3, 5, 5),
+  (164, 3, 5, 6),
+  (139, 3, 5, 7),
+  (157, 3, 6, 6),
+  (151, 3, 7, 6);
 `
 
 async function main() {
