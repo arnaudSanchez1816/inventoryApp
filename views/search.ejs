@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <%- include('partials/head.ejs') %>
+    <body>
+        <header>
+            <a href="/">Home</a>
+            <h1>Car inventory app</h1>
+        </header>
+        <main>
+            <form action="/s/" method="get">
+                <div>
+                    <label for="search">Search :</label>
+                    <input type="text" name="q" id="search" value="<%= locals.query %>">
+                </div>
+                <button type="submit">Search</button>
+            </form>
+            <h2>Car models</h2>
+            <ul>
+              <% models.forEach((model) => { %>
+                <li>
+                  <a href="/cars/<%= model.id %>"><%= model.constructor.name %> - <%= model.name %></a>
+                </li>
+              <% }) %>
+            </ul>
+            <h3>Constructors</h3>
+            <ul>
+                <% constructors.forEach((c) => { %>
+                  <li>
+                    <a href="/constructors/<%= c.id %>">
+                        <div>
+                            <img src="<%= c.logo_path %>" alt="<%= c.name %> logo" width="60" height="60">
+                            <span><%= c.name %></span>
+                        </div>
+                    </a>
+                  </li>
+                <% }) %>
+              </ul>
+        </main>
+    </body>
+</html>

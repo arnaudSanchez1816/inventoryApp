@@ -8,6 +8,7 @@ var logger = require("morgan")
 var indexRouter = require("./routes/index")
 var constructorsRouter = require("./routes/constructors")
 var carsRouter = require("./routes/cars")
+var searchRouter = require("./routes/search")
 
 var app = express()
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use("/", indexRouter)
 app.use("/constructors", constructorsRouter)
 app.use("/cars", carsRouter)
+app.use("/s", searchRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

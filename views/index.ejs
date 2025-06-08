@@ -6,6 +6,13 @@
             <h1>Car inventory app</h1>
         </header>
         <main>
+            <form action="/s/" method="get">
+              <div>
+                  <label for="search">Search :</label>
+                  <input type="text" name="q" id="search">
+              </div>
+              <button type="submit">Search</button>
+            </form>
             <h2>Car models</h2>
             <ul>
               <% locals.models.forEach((model) => { %>
