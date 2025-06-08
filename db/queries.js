@@ -102,6 +102,36 @@ async function getCars(modelId) {
     return rows
 }
 
+async function searchConstructors(name) {
+    const { rows } = await db.query(
+        `SELECT *
+        FROM constructors 
+        ORDER BY name
+        WHERE name ILIKE '%$1%'`,
+        [name]
+    )
+    rows.forEach((row) => {
+        convertConstructorLogoPath(row)
+    })
+
+    return rows
+}
+
+async function searchCarModels(name) {
+    const { rows } = await db.query(
+        `SELECT *
+        FROM models 
+        ORDER BY name
+        WHERE name ILIKE '%$1%'`,
+        [name]
+    )
+    rows.forEach((row) => {
+        convertConstructorLogoPath(row)
+    })
+
+    return rows
+}
+
 module.exports = {
     getConstructors,
     getConstructorDetails,
@@ -111,4 +141,6 @@ module.exports = {
     updateConstructor,
     deleteConstructor,
     getCars,
+    searchCarModels,
+    searchConstructors,
 }
