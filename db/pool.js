@@ -1,6 +1,6 @@
 const { Pool } = require("pg")
 
-if (process.env.LOG_QUERIES == true) {
+if (process.env.LOG_QUERIES === "true") {
     const Query = require("pg").Query
     const submit = Query.prototype.submit
     Query.prototype.submit = function () {
