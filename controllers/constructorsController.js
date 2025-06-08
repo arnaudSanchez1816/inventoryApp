@@ -44,9 +44,26 @@ exports.getConstructor = [
 ]
 
 exports.getConstructors = async (req, res) => {
-    const constructors = await getConstructors()
+    const constructors = await getConstructors({ sortBy: "name" })
 
-    res.json(constructors)
+    const constructorMap = {}
+    constructors.forEach((c) => {
+        const initial = c.name.toUpperCase()[0]
+        let mapKey = "others"
+        if (initial.match(/[A-Z]/)) {
+            mapKey = initial
+        }
+        if (!constructorMap[mapKey]) {
+            constructorMap[mapKey] = []
+        }
+
+        constructorMap[mapKey].push(c)
+    })
+
+    res.render("constructors", {
+        constructorMap: constructorMap,
+        title: "Auto Inventory",
+    })
 }
 
 exports.getNewConstructor = (req, res) => {

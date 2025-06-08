@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <%- include('partials/head.ejs') %>
+    <body>
+        <header>
+            <a href="/">Home</a>
+            <h1>Constructors</h1>
+        </header>
+        <main>
+            <div>
+                <% for (const key in constructorMap) { %>
+                    <a href="/constructors/#id_<%= key %>"><%= key %></a>
+                <% } %>
+            </div>
+            <div>
+                <% for (const key in constructorMap) { %>
+                    <div>
+                        <p><%= key %></p>
+                        <ul id="id_<%= key %>">
+                            <% constructorMap[key].forEach((constructor) => { %>
+                                <li>
+                                    <a href="/constructors/<%= constructor.id %>"><%= constructor.name %></a>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+            </div>
+        </main>
+    </body>
+</html>

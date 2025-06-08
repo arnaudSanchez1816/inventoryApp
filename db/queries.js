@@ -3,12 +3,13 @@ const fs = require("fs/promises")
 const path = require("path")
 const { convertConstructorLogoPath } = require("../utils/utils")
 
-async function getCarModels({ nbItems = 20 } = {}) {
+async function getCarModels({ nbItems = 20, sortBy = "id" } = {}) {
     const { rows } = await db.query(
         `SELECT models.id, models.name, year, json_build_object('id', c.id, 'name', c.name, 'country', c.country, 'logo_path', logo_path) constructor
         FROM models 
         JOIN constructors AS c ON models.constructor_id = c.id 
         GROUP BY models.id, c.id
+        ORDER BY ${sortBy}
         LIMIT $1`,
         [nbItems]
     )
@@ -37,12 +38,14 @@ async function getCarModelDetails(id) {
 }
 
 // Constructors
-async function getConstructors({ nbItems = 20 } = {}) {
+async function getConstructors({ nbItems = 20, sortBy = "id" } = {}) {
     const { rows } = await db.query(
-        "SELECT id, name, country, logo_path FROM constructors LIMIT $1",
+        `SELECT id, name, country, logo_path 
+        FROM constructors 
+        ORDER BY ${sortBy}
+        LIMIT $1`,
         [nbItems]
     )
-
     rows.forEach((row) => {
         convertConstructorLogoPath(row)
     })
