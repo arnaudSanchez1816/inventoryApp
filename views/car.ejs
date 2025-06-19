@@ -6,7 +6,7 @@
             <a href="/">Home</a>
             <div>
                 <p>
-                    <img src="<%= constructor.logo_path %>" alt="<%= constructor.name %> logo" width="60" height="60">
+                    <img src="<%= constructor.logoPath %>" alt="<%= constructor.name %> logo" width="60" height="60">
                     <a href="/constructors/<%= constructor.id %>"><%= constructor.name %></a>
                 </p>
                 <h1><%= model.name %></h1>
@@ -28,20 +28,20 @@
                 </ul>
                 <button type="button">Add configuration</button>
             </div>
-            <div>
+            <div class="trims">
                 <h2>Trims</h2>
                 <ul>
                     <% trims.forEach((trim) => { %>
-                      <li>
-                        <div>
+                      <li class="trim-item">
+                        <div class="trim" data-id="<%= trim.id %>" data-model-id="<%= model.id %>">
                             <p><%= trim.name || "Base" %></p>
-                            <button type="button">Edit</button>
-                            <button type="button">Delete</button>
+                            <button class="edit" type="button">Edit</button>
+                            <button class="delete" type="button">Delete</button>
                         </div>
                       </li>
                     <% }) %>
                 </ul>
-                <button type="button">Add trim</button>
+                <button id="trim-add" type="button">Add trim</button>
             </div>
             <h2>Powertrains</h2>
             <div>
@@ -64,16 +64,16 @@
                         <% powertrains.forEach((pt) => { %>
                             <tr>
                                 <th scope="row"><%= pt.name %></th>
-                                <td><%= pt.engine_code %></td>
+                                <td><%= pt.engineCode %></td>
                                 <td><%= pt.type %></td>
                                 <td><%= pt.displacement %> cc</td>
                                 <td><%= pt.power %> hp</td>
                                 <td><%= pt.torque %> N⋅m</td>
-                                <td><%= pt.engine_layout %></td>
+                                <td><%= pt.engineLayout %></td>
                                 <td><%= pt.transmission %></td>
                                 <td><%= pt.drivetrain %></td>
                                 <td>
-                                    <% pt.compatible_trims.forEach((t, index) => {%>
+                                    <% pt.compatibleTrims.forEach((t, index) => {%>
                                         <% const trim = trims.filter((item) => item.id === t)[0] %>
                                         <%= `${(index > 0 ? ", " : "")}${trim.name || "Base"}` %>
                                     <% }) %>
@@ -88,4 +88,6 @@
             </div>
         </main>
     </body>
+    <script type="module" id="module-car" src="/javascripts/car.js" data-model-json='<%- JSON.stringify(model) %>'>
+    </script>
 </html>
