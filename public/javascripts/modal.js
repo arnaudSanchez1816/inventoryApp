@@ -1,15 +1,11 @@
-import EventListener from "events"
-
 class Dialog {
     #dialog
     #title
     #generateContentCb
-    #events
 
     constructor(title, generateContentCb) {
         this.#title = title
         this.#generateContentCb = generateContentCb
-        this.#events = new EventListener()
     }
 
     show() {
@@ -21,19 +17,7 @@ class Dialog {
         this.#dialog = document.createElement("dialog")
         this.#dialog.classList = ["overlay"]
 
-        const onBackdropClick = (e) => {
-            const dialogDimensions = this.#dialog.getBoundingClientRect()
-            if (
-                e.clientX < dialogDimensions.left ||
-                e.clientX > dialogDimensions.right ||
-                e.clientY < dialogDimensions.top ||
-                e.clientY > dialogDimensions.bottom
-            ) {
-                this.#dialog.removeEventListener("click", onBackdropClick)
-                this.hide()
-            }
-        }
-        this.#dialog.addEventListener("click", onBackdropClick)
+        this.#dialog.addEventListener("click", this.#onBackdropClick)
 
         const modal = document.createElement("div")
         modal.classList = ["overlay-modal"]
@@ -45,7 +29,7 @@ class Dialog {
         // Content
         const content = document.createElement("div")
         content.classList = ["overlay-content"]
-        const generatedContent = this.#generateContentCb()
+        const generatedContent = this.#generateContentCb(this)
         if (generatedContent) {
             content.appendChild(generatedContent)
         }
@@ -54,21 +38,16 @@ class Dialog {
         const body = document.body
         body.appendChild(this.#dialog)
         this.#dialog.showModal()
-        this.#events.emit("show")
     }
 
     hide() {
         if (this.#dialog) {
+            this.#dialog.removeEventListener("click", this.#onBackdropClick)
             const body = document.body
             this.#dialog.close()
             body.removeChild(this.#dialog)
             this.#dialog = null
-            this.#events.emit("hide")
         }
-    }
-
-    on(eventName, callback) {
-        this.#events.on(eventName, callback)
     }
 
     #createHeader() {
@@ -92,6 +71,18 @@ class Dialog {
         header.appendChild(closeButton)
 
         return header
+    }
+
+    #onBackdropClick = (e) => {
+        const dialogDimensions = this.#dialog.getBoundingClientRect()
+        if (
+            e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom
+        ) {
+            this.hide()
+        }
     }
 }
 
