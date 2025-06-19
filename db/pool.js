@@ -1,4 +1,5 @@
 const { Pool } = require("pg")
+const humps = require("humps")
 
 if (process.env.LOG_QUERIES === "true") {
     const Query = require("pg").Query
@@ -12,6 +13,17 @@ if (process.env.LOG_QUERIES === "true") {
         console.log(query)
         submit.apply(this, arguments)
     }
+}
+
+// Camelize query result rows
+const query = Pool.prototype.query
+Pool.prototype.query = async function () {
+    const results = await query.apply(this, arguments)
+    const newResults = {
+        ...results,
+        rows: humps.camelizeKeys(results.rows),
+    }
+    return newResults
 }
 
 module.exports = new Pool()
