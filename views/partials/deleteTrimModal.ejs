@@ -1,0 +1,24 @@
+<dialog class="delete-trim-dialog" data-trim-id="<%= trim.id %>">
+    <section>
+        <header>
+            <h1>Delete trim</h1>
+        </header>
+        <div>
+            <form action="/trims/delete/<%= trim.id %>" method="post">
+                <input type="hidden" name="modelId" value="<%= model.id %>" />
+                <label>
+                    <p>Enter "Delete" to confirm deletion</p>
+                    <input type="text" placeholder="Delete" class="delete" />
+                </label>
+                <label
+                    >Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Delete</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>

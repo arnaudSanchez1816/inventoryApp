@@ -4,11 +4,13 @@ var express = require("express")
 var path = require("path")
 var cookieParser = require("cookie-parser")
 var logger = require("morgan")
+var debug = require("debug")("inventoryapp:server")
 
 var indexRouter = require("./routes/index")
 var constructorsRouter = require("./routes/constructors")
 var carsRouter = require("./routes/cars")
 var searchRouter = require("./routes/search")
+var trimsRouter = require("./routes/trims")
 
 var app = express()
 
@@ -25,6 +27,7 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use("/", indexRouter)
 app.use("/constructors", constructorsRouter)
 app.use("/cars", carsRouter)
+app.use("/trims", trimsRouter)
 app.use("/s", searchRouter)
 
 // catch 404 and forward to error handler
@@ -41,6 +44,7 @@ app.use(function (err, req, res, next) {
     // render the error page
     res.status(err.status || 500)
     res.render("error")
+    debug("%O", err)
 })
 
 module.exports = app

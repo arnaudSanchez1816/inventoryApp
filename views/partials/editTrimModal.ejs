@@ -1,0 +1,22 @@
+<dialog class="edit-trim-dialog" data-trim-id="<%= trim.id %>">
+    <section>
+        <header>
+            <h1>Edit trim</h1>
+        </header>
+        <form action="/trims/edit/<%= trim.id %>" method="post">
+            <input type="hidden" name="modelId" value="<%= model.id %>" />
+            <label>
+                Name
+                <input type="text" value="<%= trim.name %>" name="name" />
+            </label>
+            <label
+                >Password
+                <input type="password" name="password" />
+            </label>
+            <button class="dialog-btn submit" type="submit">Edit</button>
+            <button class="dialog-btn cancel close" type="button">
+                Cancel
+            </button>
+        </form>
+    </section>
+</dialog>

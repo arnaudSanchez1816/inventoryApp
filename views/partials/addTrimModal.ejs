@@ -1,0 +1,24 @@
+<dialog id="add-trim-dialog">
+    <section>
+        <header>
+            <h1>Add trim</h1>
+        </header>
+        <div>
+            <form action="/trims/add" method="post">
+                <input type="hidden" name="modelId" value="<%= model.id %>" />
+                <label>
+                    Name
+                    <input type="text" name="name" />
+                </label>
+                <label
+                    >Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Add</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>

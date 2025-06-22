@@ -5,7 +5,14 @@ const {
     body,
 } = require("express-validator")
 const createHttpError = require("http-errors")
-const { getCarModels, getCarModelDetails, getCars } = require("../db/queries")
+const {
+    getCarModels,
+    getCarModelDetails,
+    getCars,
+    updateCarTrim,
+    deleteCarTrim,
+    addCarTrim,
+} = require("../db/queries")
 
 const carModelIdParamValidation = [param("id").isInt({ min: 0 })]
 const trimIdParamValidation = [param("trimId").isInt({ min: 0 })]
@@ -24,6 +31,12 @@ const trimBodyValidation = [
         .isString()
         .notEmpty()
         .withMessage("Name field is empty"),
+    body("modelId")
+        .trim()
+        .notEmpty()
+        .withMessage("Trim model id is empty")
+        .isInt({ min: 0 })
+        .withMessage("Trim Model id is not valid"),
 ]
 
 exports.getCarModel = [
@@ -125,31 +138,34 @@ exports.deletePowertrain = [
 ]
 
 exports.postNewCarTrim = [
-    carModelIdParamValidation,
     trimBodyValidation,
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             const errorMap = errors.mapped()
-            if (errorMap.id) {
+            if (errorMap.modelId) {
                 throw createHttpError(404, "Car model not found")
             }
             throw createHttpError(400, errors)
         }
-        const { id, name } = matchedData(req)
-        res.send("POST new car trim")
+        const { modelId, name } = matchedData(req)
+        try {
+            await addCarTrim(modelId, name)
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 
-exports.postUpdateCarTrim = [
-    carModelIdParamValidation,
+exports.updateCarTrim = [
     trimIdParamValidation,
     trimBodyValidation,
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             const errorMap = errors.mapped()
-            if (errorMap.id) {
+            if (errorMap.modelId) {
                 throw createHttpError(404, "Car model not found")
             }
             if (errorMap.trimId) {
@@ -157,25 +173,43 @@ exports.postUpdateCarTrim = [
             }
             throw createHttpError(400, errors)
         }
-        const { id, trimId, name } = matchedData(req)
-        res.send("POST update car trim")
+        try {
+            const { modelId, trimId, name } = matchedData(req)
+            await updateCarTrim(trimId, name)
+
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 
 exports.deleteCarTrim = [
-    carModelIdParamValidation,
     trimIdParamValidation,
-    (req, res) => {
+    [
+        body("modelId")
+            .trim()
+            .notEmpty()
+            .withMessage("Trim model id is empty")
+            .isInt({ min: 0 })
+            .withMessage("Trim Model id is not valid"),
+    ],
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             const errorMap = errors.mapped()
-            if (errorMap.id) {
+            if (errorMap.modelId) {
                 throw createHttpError(404, "Car model not found")
             }
             throw createHttpError(404, "Trim id not found")
         }
 
-        const { id, trimId } = matchedData(req)
-        res.send(`POST delete car trim\ncar model ${id}\ntrim ${trimId}`)
+        try {
+            const { modelId, trimId } = matchedData(req)
+            await deleteCarTrim(trimId)
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]

@@ -129,6 +129,22 @@ async function searchCarModels(name) {
     return rows
 }
 
+// Trims
+async function updateCarTrim(trimId, name) {
+    await db.query("UPDATE trims SET name=$2 WHERE id=$1", [trimId, name])
+}
+
+async function deleteCarTrim(trimId) {
+    await db.query("DELETE FROM trims WHERE id=$1", [trimId])
+}
+
+async function addCarTrim(modelId, name) {
+    await db.query("INSERT INTO trims (model_id, name) VALUES ($1, $2)", [
+        modelId,
+        name,
+    ])
+}
+
 module.exports = {
     getConstructors,
     getConstructorDetails,
@@ -140,4 +156,7 @@ module.exports = {
     getCars,
     searchCarModels,
     searchConstructors,
+    updateCarTrim,
+    deleteCarTrim,
+    addCarTrim,
 }
