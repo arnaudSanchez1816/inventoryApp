@@ -70,3 +70,32 @@ powertrains.forEach((powertrain) => {
 const addConfigDialog = new Dialog("#add-configuration-dialog")
 const addConfigBtn = document.querySelector("#add-configuration-btn")
 addConfigBtn.addEventListener("click", () => addConfigDialog.show())
+
+const configurations = document.querySelectorAll(".config-item")
+configurations.forEach((config) => {
+    const editDialog = new Dialog(config.querySelector(".edit-config-dialog"))
+
+    const editBtn = config.querySelector(".edit")
+
+    editBtn.addEventListener("click", () => editDialog.show())
+
+    const deleteDialog = new Dialog(
+        config.querySelector(".delete-config-dialog")
+    )
+    const onDeleteSubmitted = (e) => {
+        e.preventDefault()
+        const confirmInput = e.target.querySelector("input.delete")
+        confirmInput.setCustomValidity("")
+
+        const confirmInputValue = confirmInput.value
+        if (confirmInputValue !== "Delete") {
+            confirmInput.setCustomValidity('Enter "Delete" to confirm deletion')
+            return
+        }
+        e.target.submit()
+    }
+    const deleteForm = deleteDialog.dialog.querySelector("form")
+    deleteForm.addEventListener("submit", onDeleteSubmitted)
+    const deleteBtn = config.querySelector(".delete")
+    deleteBtn.addEventListener("click", () => deleteDialog.show())
+})

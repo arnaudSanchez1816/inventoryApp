@@ -1,0 +1,36 @@
+<dialog class="delete-config-dialog">
+    <section>
+        <header>
+            <h1>Delete configuration</h1>
+        </header>
+        <div>
+            <form
+                action="/cars/<%= config.modelId %>/config/delete"
+                method="post"
+            >
+                <input
+                    type="hidden"
+                    name="trimId"
+                    value="<%= config.trimId %>"
+                />
+                <input
+                    type="hidden"
+                    name="powertrainId"
+                    value="<%= config.powertrainId %>"
+                />
+                <label>
+                    <p>Enter "Delete" to confirm deletion</p>
+                    <input type="text" placeholder="Delete" class="delete" />
+                </label>
+                <label
+                    >Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Delete</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>

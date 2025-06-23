@@ -18,12 +18,14 @@
                 <h2>Configurations in inventory</h2>
                 <ul>
                     <% cars.forEach((car) => { %>
-                        <li>
+                        <li class="config-item">
                             <p><%= car.name %></p>
                             <p>Price : <%= car.price %></p>
                             <p>Stock : <%= car.stock %></p>
                             <button class="edit" type="button">Edit</button>
                             <button class="delete" type="button">Delete</button>
+                            <%- include('partials/configurations/editConfigModal.ejs', {config:car}) %>
+                            <%- include('partials/configurations/deleteConfigModal.ejs', {config:car}) %>
                         </li>
                     <% }) %>
                 </ul>

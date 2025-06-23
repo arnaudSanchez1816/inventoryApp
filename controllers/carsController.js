@@ -155,39 +155,43 @@ exports.postNewCarModel = [
 
 exports.addNewCarConfiguration = [
     param("modelId").isInt({ min: 0 }),
-    body(["trimId", "powertrainId", "price"]).notEmpty().isInt({ min: 0 }),
+    body(["trimId", "powertrainId", "price", "stock"])
+        .notEmpty()
+        .isInt({ min: 0 }),
     (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors)
         }
-        const { modelId, trimId, powertrainId, price } = matchedData(req)
+        const { modelId, trimId, powertrainId, price, stock } = matchedData(req)
         res.send("POST new car config")
     },
 ]
 
 exports.updateCarConfiguration = [
     param("modelId").isInt({ min: 0 }),
-    body(["trimId", "powertrainId", "price"]).notEmpty().isInt({ min: 0 }),
+    body(["trimId", "powertrainId", "price", "stock"])
+        .notEmpty()
+        .isInt({ min: 0 }),
     (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors)
         }
-        const { modelId, trimId, powertrainId, price } = matchedData(req)
+        const { modelId, trimId, powertrainId, pric, stock } = matchedData(req)
         res.send("POST update car config")
     },
 ]
 
 exports.deleteCarConfiguration = [
     param("modelId").isInt({ min: 0 }),
-    body(["trimId", "powertrainId", "price"]).notEmpty().isInt({ min: 0 }),
+    body(["trimId", "powertrainId"]).notEmpty().isInt({ min: 0 }),
     (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors)
         }
-        const { modelId, trimId, powertrainId, price } = matchedData(req)
+        const { modelId, trimId, powertrainId } = matchedData(req)
         res.send("POST delete car config")
     },
 ]

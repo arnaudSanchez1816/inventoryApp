@@ -88,16 +88,11 @@ async function deleteConstructor(id) {
 }
 
 async function getCars(modelId) {
-    const { rows } = await db.query(
-        `SELECT c.model_id, c.trim_id, c.powertrain_id, (powertrains.name || ' ' || trims.name) as name, c.price, i.stock, json_agg(trims) trim, json_agg(powertrains) powertrain
-        FROM cars AS c
-        JOIN trims on trims.id = c.trim_id
-        JOIN powertrains on powertrains.id = c.powertrain_id
-        JOIN inventory AS i ON c.model_id = i.model_id AND c.trim_id = i.trim_id AND c.powertrain_id = i.powertrain_id
-        WHERE c.model_id = $1
-        GROUP BY c.model_id, c.trim_id, c.powertrain_id, c.price, i.stock, powertrains.name, trims.name`,
-        [modelId]
+    const sqlString = await fs.readFile(
+        path.join(__dirname, "queries/getCarModelConfigurations.pgsql"),
+        "utf-8"
     )
+    const { rows } = await db.query(sqlString, [modelId])
 
     return rows
 }

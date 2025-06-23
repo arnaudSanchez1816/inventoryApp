@@ -28,7 +28,7 @@ get_trims AS (
     GROUP BY m.id, m.name, m.year, m.constructor_id, m.powertrains
 ),
 get_constructor AS (
-    SELECT m.id, m.name, m.year, json_build_object('id', c.id, 'name', c.name, 'country', c.country, 'logo_path', c.logo_path) constructor, m.powertrains, m.trims
+    SELECT m.id, m.name, m.year, to_jsonb(c) constructor, m.powertrains, m.trims
     FROM get_trims as m
     JOIN constructors AS c ON m.constructor_id = c.id
 )

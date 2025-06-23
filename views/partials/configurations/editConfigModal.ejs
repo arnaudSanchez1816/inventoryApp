@@ -1,0 +1,69 @@
+<dialog class="edit-config-dialog">
+    <section>
+        <header>
+            <h1>Edit configuration</h1>
+        </header>
+        <% console.log(config) %>
+        <div>
+            <form
+                action="/cars/<%= config.modelId %>/config/update"
+                method="post"
+            >
+                <input
+                    type="hidden"
+                    name="trimId"
+                    value="<%= config.trimId %>"
+                />
+                <input
+                    type="hidden"
+                    name="powertrainId"
+                    value="<%= config.powertrainId %>"
+                />
+                <label>
+                    Trim
+                    <input
+                        type="text"
+                        value="<%= config.trim.name %>"
+                        readonly
+                    />
+                </label>
+                <label>
+                    Powertrain
+                    <input
+                        type="text"
+                        value="<%= config.powertrain.name %>"
+                        readonly
+                    />
+                </label>
+                <label>
+                    Price
+                    <input
+                        type="number"
+                        name="price"
+                        min="0"
+                        value="<%= config.price %>"
+                        required
+                    />
+                </label>
+                <label>
+                    Stock
+                    <input
+                        type="number"
+                        name="stock"
+                        min="0"
+                        value="<%= config.stock %>"
+                        required
+                    />
+                </label>
+                <label>
+                    Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Add</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>
