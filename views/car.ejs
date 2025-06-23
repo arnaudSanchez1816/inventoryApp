@@ -38,13 +38,13 @@
                             <button class="edit" type="button">Edit</button>
                             <button class="delete" type="button">Delete</button>
                         </div>
-                        <%- include('partials/deleteTrimModal.ejs', {trim:trim, model:model}) %>
-                        <%- include('partials/editTrimModal.ejs', {trim:trim, model:model}) %>
+                        <%- include('partials/trims/deleteTrimModal.ejs', {trim:trim, model:model}) %>
+                        <%- include('partials/trims/editTrimModal.ejs', {trim:trim, model:model}) %>
                       </li>
                     <% }) %>
                 </ul>
                 <button id="add-trim-btn" type="button">Add trim</button>
-                <%- include('partials/addTrimModal.ejs', {model: model}) %>
+                <%- include('partials/trims/addTrimModal.ejs', {model: model}) %>
             </div>
             <h2>Powertrains</h2>
             <div>
@@ -65,7 +65,7 @@
                     </thead>
                     <tbody>
                         <% powertrains.forEach((pt) => { %>
-                            <tr>
+                            <tr class="powertrain-item" data-pt-id="<%= pt.id %>">
                                 <th scope="row"><%= pt.name %></th>
                                 <td><%= pt.engineCode %></td>
                                 <td><%= pt.type %></td>
@@ -81,13 +81,20 @@
                                         <%= `${(index > 0 ? ", " : "")}${trim.name || "Base"}` %>
                                     <% }) %>
                                 </td>
-                                <td><button type="button">Edit</button></td>
-                                <td><button type="button">Delete</button></td>
+                                <td><button class="edit" type="button">Edit</button></td>
+                                <td><button class="delete" type="button">Delete</button></td>
                             </tr>
                         <% }) %>
                     </tbody>
                 </table>
-                <button type="button">Add powertrain</button>
+                <button id="add-powertrain-btn" type="button">Add powertrain</button>
+                <div class="dialogs">
+                    <%- include('partials/powertrains/addPowertrainModal.ejs', {model: model, trims: trims}) %>
+                    <% powertrains.forEach((pt) => { %>
+                        <%- include('partials/powertrains/editPowertrainModal.ejs', {model:model, powertrain:pt, trims:trims}) %>
+                        <%- include('partials/powertrains/deletePowertrainModal.ejs', {model:model, powertrain:pt, trims:trims}) %>
+                    <% }) %>
+                </div>
             </div>
         </main>
     </body>

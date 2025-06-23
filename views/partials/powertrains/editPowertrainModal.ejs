@@ -1,0 +1,70 @@
+<dialog class="edit-pt-dialog" data-pt-id="<%= powertrain.id %>">
+    <section>
+        <header>
+            <h1>Edit powertrain</h1>
+        </header>
+        <div>
+            <form action="/powertrains/edit/<%= powertrain.id %>" method="post">
+                <input type="hidden" name="modelId" value="<%= model.id %>" />
+                <label>
+                    Name
+                    <input type="text" name="name" value="<%= powertrain.name %>" required />
+                </label>
+                <label>
+                    Engine code
+                    <input type="text" name="engine-code" value="<%= powertrain.engineCode %>" required />
+                </label>
+                <label>
+                    Type
+                    <input type="text" name="type" value="<%= powertrain.type %>" required />
+                </label>
+                <label>
+                    Displacement
+                    <input type="number" name="displacement" value="<%= powertrain.displacement %>" min="0" required />
+                </label>
+                <label>
+                    Power
+                    <input type="number" name="power" value="<%= powertrain.power %>" min="0" required />
+                </label>
+                <label>
+                    Torque
+                    <input type="number" name="torque" value="<%= powertrain.torque %>" min="0" required />
+                </label>
+                <label>
+                    Configuration
+                    <input type="text" name="configuration" value="<%= powertrain.configuration %>" required />
+                </label>
+                <label>
+                    Transmission
+                    <input type="text" name="transmission" value="<%= powertrain.transmission %>" required />
+                </label>
+                <label>
+                    Drivetrain
+                    <input type="text" name="drivetrain" value="<%= powertrain.drivetrain %>" required />
+                </label>
+                <fieldset>
+                    <legend>Compatible trims</legend>
+                    <% trims.forEach(trim => {%>
+                        <% const isChecked = powertrain.compatibleTrims.some((t) => t === trim.id) %>
+                        <label>
+                            <input type="checkbox" name="trims" 
+                            <% if (isChecked) { %>
+                                checked
+                            <% } %>
+                            value="<%= trim.id %>"/>
+                            <%= trim.name %>
+                        </label>
+                    <% }) %>
+                </fieldset>
+                <label
+                    >Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Edit</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>

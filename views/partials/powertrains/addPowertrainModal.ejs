@@ -1,0 +1,65 @@
+<dialog id="add-powertrain-dialog">
+    <section>
+        <header>
+            <h1>Add powertrain</h1>
+        </header>
+        <div>
+            <form action="/powertrains/add" method="post">
+                <input type="hidden" name="modelId" value="<%= model.id %>" />
+                <label>
+                    Name
+                    <input type="text" name="name" required />
+                </label>
+                <label>
+                    Engine code
+                    <input type="text" name="engine-code" required />
+                </label>
+                <label>
+                    Type
+                    <input type="text" name="type" required />
+                </label>
+                <label>
+                    Displacement
+                    <input type="number" name="displacement" min="0" required />
+                </label>
+                <label>
+                    Power
+                    <input type="number" name="power" min="0" required />
+                </label>
+                <label>
+                    Torque
+                    <input type="number" name="torque" min="0" required />
+                </label>
+                <label>
+                    Configuration
+                    <input type="text" name="configuration" required />
+                </label>
+                <label>
+                    Transmission
+                    <input type="text" name="transmission" required />
+                </label>
+                <label>
+                    Drivetrain
+                    <input type="text" name="drivetrain" required />
+                </label>
+                <fieldset>
+                    <legend>Compatible trims</legend>
+                    <% trims.forEach(trim => {%>
+                        <label>
+                            <input type="checkbox" name="trims" value="<%= trim.id %>"/>
+                            <%= trim.name %>
+                        </label>
+                    <% }) %>
+                </fieldset>
+                <label
+                    >Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Add</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>

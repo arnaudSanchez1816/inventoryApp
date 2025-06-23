@@ -25,7 +25,7 @@ class Dialog {
         closeButtons.forEach((closeBtn) =>
             closeBtn.addEventListener("click", () => this.hide())
         )
-        dialog.addEventListener("click", this.#onBackdropClick)
+        dialog.addEventListener("mousedown", this.#onBackdropClick)
     }
 
     get dialog() {

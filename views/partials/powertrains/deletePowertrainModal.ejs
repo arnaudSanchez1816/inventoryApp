@@ -1,0 +1,27 @@
+<dialog class="delete-pt-dialog" data-pt-id="<%= powertrain.id %>">
+    <section>
+        <header>
+            <h1>Delete powertrain</h1>
+        </header>
+        <div>
+            <form
+                action="/powertrains/delete/<%= powertrain.id %>"
+                method="post"
+            >
+                <input type="hidden" name="modelId" value="<%= model.id %>" />
+                <label>
+                    <p>Enter "Delete" to confirm deletion</p>
+                    <input type="text" placeholder="Delete" class="delete" />
+                </label>
+                <label
+                    >Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Delete</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>

@@ -18,7 +18,6 @@ trims.forEach((trim) => {
 
         const confirmInputValue = confirmInput.value
         if (confirmInputValue !== "Delete") {
-            console.log("hello")
             confirmInput.setCustomValidity('Enter "Delete" to confirm deletion')
             return
         }
@@ -33,3 +32,36 @@ trims.forEach((trim) => {
 const addTrimDialog = new Dialog("#add-trim-dialog")
 const addTrimBtn = document.querySelector("#add-trim-btn")
 addTrimBtn.addEventListener("click", () => addTrimDialog.show())
+
+// Powertrains
+const addPowertrainDialog = new Dialog("#add-powertrain-dialog")
+const addPowertrainBtn = document.querySelector("#add-powertrain-btn")
+addPowertrainBtn.addEventListener("click", () => addPowertrainDialog.show())
+
+const powertrains = document.querySelectorAll(".powertrain-item")
+powertrains.forEach((powertrain) => {
+    const id = powertrain.dataset.ptId
+    const editPtDialog = new Dialog(`.edit-pt-dialog[data-pt-id="${id}"]`)
+
+    const editBtn = powertrain.querySelector(".edit")
+
+    editBtn.addEventListener("click", () => editPtDialog.show())
+
+    const deletePtDialog = new Dialog(`.delete-pt-dialog[data-pt-id="${id}"]`)
+    const onDeletePtSubmitted = (e) => {
+        e.preventDefault()
+        const confirmInput = e.target.querySelector("input.delete")
+        confirmInput.setCustomValidity("")
+
+        const confirmInputValue = confirmInput.value
+        if (confirmInputValue !== "Delete") {
+            confirmInput.setCustomValidity('Enter "Delete" to confirm deletion')
+            return
+        }
+        e.target.submit()
+    }
+    const deleteForm = deletePtDialog.dialog.querySelector("form")
+    deleteForm.addEventListener("submit", onDeletePtSubmitted)
+    const deleteBtn = powertrain.querySelector(".delete")
+    deleteBtn.addEventListener("click", () => deletePtDialog.show())
+})

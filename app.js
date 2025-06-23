@@ -11,6 +11,7 @@ var constructorsRouter = require("./routes/constructors")
 var carsRouter = require("./routes/cars")
 var searchRouter = require("./routes/search")
 var trimsRouter = require("./routes/trims")
+var powertrainsRouter = require("./routes/powertrains")
 
 var app = express()
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use("/", indexRouter)
 app.use("/constructors", constructorsRouter)
 app.use("/cars", carsRouter)
+app.use("/powertrains", powertrainsRouter)
 app.use("/trims", trimsRouter)
 app.use("/s", searchRouter)
 
