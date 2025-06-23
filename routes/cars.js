@@ -5,11 +5,15 @@ const {
     getNewCarModel,
     postNewCarModel,
     addNewCarConfiguration,
+    updateCarConfiguration,
+    deleteCarConfiguration,
 } = require("../controllers/carsController")
 var router = express.Router()
 
 // configs
 router.post("/:modelId/config/new", addNewCarConfiguration)
+router.post("/:modelId/config/update", updateCarConfiguration)
+router.post("/:modelId/config/delete", deleteCarConfiguration)
 
 // models
 router.get("/new", getNewCarModel)
