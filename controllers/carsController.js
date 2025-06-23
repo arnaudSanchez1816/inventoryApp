@@ -153,6 +153,19 @@ exports.postNewCarModel = [
     },
 ]
 
+exports.addNewCarConfiguration = [
+    param("modelId").isInt({ min: 0 }),
+    body(["trimId", "powertrainId", "price"]).notEmpty().isInt({ min: 0 }),
+    (req, res) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            throw createHttpError(400, errors)
+        }
+        const { modelId, trimId, powertrainId, price } = matchedData(req)
+        res.send("POST new car config")
+    },
+]
+
 exports.postNewPowertrain = [
     powertrainBodyValidation(),
     async (req, res) => {

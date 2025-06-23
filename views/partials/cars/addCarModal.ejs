@@ -1,0 +1,39 @@
+<dialog id="add-configuration-dialog">
+    <section>
+        <header>
+            <h1>Add configuration</h1>
+        </header>
+        <div>
+            <form action="/cars/<%= model.id %>/config/new" method="post">
+                <label>
+                    Trim
+                    <select name="trimId">
+                        <% trims.forEach((trim) => { %>
+                            <option value="<%= trim.id %>"><%= trim.name %></option>
+                        <% }) %>
+                    </select>
+                </label>
+                <label>
+                    Powertrain
+                    <select name="powertrainId">
+                        <% powertrains.forEach((pt) => { %>
+                            <option value="<%= pt.id %>"><%= pt.name %></option>
+                        <% }) %>
+                    </select>
+                </label>
+                <label>
+                    Price
+                    <input type="number" name="price" min="0"/>
+                </label>
+                <label>
+                    Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Add</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>

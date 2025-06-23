@@ -51,6 +51,10 @@ class Dialog {
     }
 
     #onBackdropClick = (e) => {
+        if (e.target !== e.currentTarget) {
+            return
+        }
+
         const dialogDimensions = this.#dialog.getBoundingClientRect()
         if (
             e.clientX < dialogDimensions.left ||

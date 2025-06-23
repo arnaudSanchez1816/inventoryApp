@@ -65,3 +65,8 @@ powertrains.forEach((powertrain) => {
     const deleteBtn = powertrain.querySelector(".delete")
     deleteBtn.addEventListener("click", () => deletePtDialog.show())
 })
+
+// Configurations
+const addConfigDialog = new Dialog("#add-configuration-dialog")
+const addConfigBtn = document.querySelector("#add-configuration-btn")
+addConfigBtn.addEventListener("click", () => addConfigDialog.show())
