@@ -1,0 +1,47 @@
+<dialog class="add-constructor-dialog">
+    <section>
+        <header>
+            <h1>Add constructor</h1>
+        </header>
+        <form action="/constructors/new" method="post">
+            <label>
+                Name
+                <input type="text" name="name" />
+            </label>
+            <label>
+                Country
+                <input type="text" name="name" />
+            </label>
+            <div class="logo-input-container">
+                <label>
+                    Logo
+                    <input
+                        type="file"
+                        name="logo"
+                        accept="image/png, image/jpeg, image/svg+xml"
+                        class="logo-input"
+                        required
+                    />
+                </label>
+                <div>
+                    <img
+                        alt="Constructor logo preview"
+                        title="Constructor logo preview"
+                        class="logo-preview hidden"
+                        width="60"
+                        height="60"
+                    />
+                    <p class="logo-error"></p>
+                </div>
+            </div>
+            <label
+                >Password
+                <input type="password" name="password" />
+            </label>
+            <button class="dialog-btn submit" type="submit">Add</button>
+            <button class="dialog-btn cancel close" type="button">
+                Cancel
+            </button>
+        </form>
+    </section>
+</dialog>

@@ -7,6 +7,7 @@
             <h1>Constructors</h1>
         </header>
         <main>
+            <button id="add-new-constructor" type="button">Add new constructor</button>
             <div>
                 <% for (const key in constructorMap) { %>
                     <a href="/constructors/#id_<%= key %>"><%= key %></a>
@@ -27,5 +28,7 @@
                 <% } %>
             </div>
         </main>
+        <%- include('partials/constructors/addConstructorModal.ejs') %>
+        <script type="module" src="/javascripts/constructors.js" defer></script>
     </body>
 </html>

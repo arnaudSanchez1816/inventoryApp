@@ -15,6 +15,7 @@
                 <p><%= constructor.country %></p>
             </div>
             <img src="<%= constructor.logoPath %>" alt="<%= constructor.name %> logo">
+            <button id="edit-constructor-btn" type="button">Edit Constructor</button>
             <h3>Car models</h3>
             <ul>
               <% constructor.models.forEach((model) => { %>
@@ -23,6 +24,9 @@
                 </li>
               <% }) %>
             </ul>
+            <button id="add-model-btn" type="button">Add car model</button>
         </main>
+        <%- include('partials/constructors/editConstructorModal.ejs', {ct:constructor}) %>
     </body>
+    <script type="module" src="/javascripts/constructor.js" defer></script>
 </html>

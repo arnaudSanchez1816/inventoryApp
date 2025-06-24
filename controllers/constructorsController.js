@@ -66,10 +66,6 @@ exports.getConstructors = async (req, res) => {
     })
 }
 
-exports.getNewConstructor = (req, res) => {
-    res.send("GET new constructor")
-}
-
 exports.postNewConstructor = [
     constructorBodyValidation,
     (req, res) => {

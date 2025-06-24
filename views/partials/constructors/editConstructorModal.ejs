@@ -1,0 +1,48 @@
+<dialog class="edit-constructor-dialog">
+    <section>
+        <header>
+            <h1>Edit constructor</h1>
+        </header>
+        <form action="/constructors/<%= ct.id %>/update" method="post">
+            <label>
+                Name
+                <input type="text" value="<%= ct.name %>" name="name" />
+            </label>
+            <label>
+                Country
+                <input type="text" value="<%= ct.country %>" name="name" />
+            </label>
+            <div class="logo-input-container">
+                <label>
+                    Logo
+                    <input
+                        type="file"
+                        name="logo"
+                        accept="image/png, image/jpeg, image/svg+xml"
+                        class="logo-input"
+                        required
+                    />
+                </label>
+                <div>
+                    <img
+                        src="<%= ct.logoPath %>"
+                        alt="Constructor logo preview"
+                        title="Constructor logo preview"
+                        class="logo-preview"
+                        width="60"
+                        height="60"
+                    />
+                    <p class="logo-error"></p>
+                </div>
+            </div>
+            <label
+                >Password
+                <input type="password" name="password" />
+            </label>
+            <button class="dialog-btn submit" type="submit">Edit</button>
+            <button class="dialog-btn cancel close" type="button">
+                Cancel
+            </button>
+        </form>
+    </section>
+</dialog>
