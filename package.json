@@ -18,6 +18,7 @@
     "http-errors": "^2.0.0",
     "humps": "^2.0.1",
     "morgan": "^1.10",
+    "multer": "^2.0.1",
     "pg": "^8.16.0"
   },
   "devDependencies": {
