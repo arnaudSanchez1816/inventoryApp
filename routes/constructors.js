@@ -5,7 +5,7 @@ const {
     postNewConstructor,
     postUpdateConstructor,
     deleteConstructor,
-} = require("../controllers/constructorsController")
+} = require("../controllers/constructorsController.js")
 var router = express.Router()
 
 router.post("/new", postNewConstructor)
