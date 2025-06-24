@@ -70,10 +70,12 @@ async function getConstructorDetails(id) {
 }
 
 async function addConstructor({ name, country, logo_path }) {
-    await db.query(
-        "INSERT INTO constructors (name, country, logo_path) VALUES($1, $2, $3);",
+    const { rows } = await db.query(
+        "INSERT INTO constructors (name, country, logo_path) VALUES($1, $2, $3) RETURNING id;",
         [name, country, logo_path]
     )
+
+    return rows[0].id
 }
 
 async function updateConstructor({ id, name, country, logo_path }) {
