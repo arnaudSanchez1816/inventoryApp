@@ -3,14 +3,18 @@
         <header>
             <h1>Edit constructor</h1>
         </header>
-        <form action="/constructors/<%= ct.id %>/update" method="post">
+        <form
+            action="/constructors/<%= ct.id %>/update"
+            method="post"
+            enctype="multipart/form-data"
+        >
             <label>
                 Name
                 <input type="text" value="<%= ct.name %>" name="name" />
             </label>
             <label>
                 Country
-                <input type="text" value="<%= ct.country %>" name="name" />
+                <input type="text" value="<%= ct.country %>" name="country" />
             </label>
             <div class="logo-input-container">
                 <label>
