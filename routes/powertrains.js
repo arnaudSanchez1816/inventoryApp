@@ -3,7 +3,7 @@ const {
     postNewPowertrain,
     updatePowertrain,
     deletePowertrain,
-} = require("../controllers/carsController")
+} = require("../controllers/powertrainsController")
 var router = express.Router()
 
 // Powertrains

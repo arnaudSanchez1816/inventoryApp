@@ -3,7 +3,7 @@ const {
     postNewCarTrim,
     updateCarTrim,
     deleteCarTrim,
-} = require("../controllers/carsController")
+} = require("../controllers/trimsController")
 var router = express.Router()
 
 // Trims
