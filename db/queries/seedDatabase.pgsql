@@ -65,9 +65,9 @@ CREATE TABLE IF NOT EXISTS inventory (
 
 INSERT INTO constructors (name, country, logo_path) 
 VALUES
-  ('Ferrari', 'Italy', 'Ferrari.svg'),
-  ('BMW', 'Germany', 'BMW.svg'),
-  ('Renault', 'France', 'Renault.svg');
+  ('Ferrari', 'Italy', '1.svg'),
+  ('BMW', 'Germany', '2.svg'),
+  ('Renault', 'France', '3.svg');
 
 INSERT INTO models (name, year, constructor_id) 
 VALUES
@@ -166,12 +166,13 @@ LANGUAGE plpgsql AS $$
 DECLARE
     powertrain_id integer;
     trim_id integer;
-BEGIN ATOMIC 
+BEGIN 
     INSERT INTO powertrains (name, type, engine_code, displacement, power, torque, engine_layout, transmission, drivetrain, model_id) 
     VALUES
-    (in_name, in_type, in_engine_code, in_displacement, in_power, in_torque, in_engine_layout, in_transmission, in_drivetrain, in_model_id) RETURNING id AS powertrain_id;
+    (in_name, in_type, in_engine_code, in_displacement, in_power, in_torque, in_engine_layout, in_transmission, in_drivetrain, in_model_id) RETURNING id INTO powertrain_id;
 
     FOREACH trim_id IN ARRAY in_trim_ids loop
-    INSERT INTO trim_powertrain_compatibilities (trim_id, powertrain_id) VALUES (trim_id, powertrain_id)
+    INSERT INTO trim_powertrain_compatibilities (trim_id, powertrain_id) VALUES (trim_id, powertrain_id);
     end loop;
 END;
+$$;
