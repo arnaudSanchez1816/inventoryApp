@@ -24,6 +24,23 @@ const constructorBodyValidation = () => [
         .withMessage("Field must be a string"),
 ]
 
+const constructorLogoMiddleware = () =>
+    multer({
+        storage: multer.memoryStorage(),
+        limits: { files: 1, fileSize: MAX_FILE_SIZE },
+    }).single("logo")
+
+const checkLogoValidity = (req, res, next) => {
+    const file = req.file
+    if (!file) {
+        throw createHttpError(400, "Logo file missing")
+    }
+    if (!LOGO_FILE_TYPES.includes(file.mimetype)) {
+        throw createHttpError(400, "Invalid file type")
+    }
+    next()
+}
+
 exports.getConstructor = [
     constructorIdParamValidation(),
     async (req, res, next) => {
@@ -70,24 +87,15 @@ exports.getConstructors = async (req, res) => {
 }
 
 exports.postNewConstructor = [
-    multer({
-        storage: multer.memoryStorage(),
-        limits: { files: 1, fileSize: MAX_FILE_SIZE },
-    }).single("logo"),
+    constructorLogoMiddleware(),
     constructorBodyValidation(),
+    checkLogoValidity,
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors.array())
         }
         const file = req.file
-        if (!file) {
-            throw createHttpError(400, "Logo file missing")
-        }
-        if (!LOGO_FILE_TYPES.includes(file.mimetype)) {
-            throw createHttpError(400, "Invalid file type")
-        }
-
         try {
             const extension = path.extname(file.originalname)
             const { name, country } = matchedData(req)
@@ -95,7 +103,7 @@ exports.postNewConstructor = [
             const constructorId = await db.addConstructor({
                 name: name,
                 country: country,
-                logo_path: "Ferrari.svg",
+                logoFileExtension: extension,
             })
 
             const logoPath = `${constructorId}${extension}`
@@ -103,7 +111,6 @@ exports.postNewConstructor = [
                 `./public/images/constructors/${logoPath}`,
                 file.buffer
             )
-
             res.send("POST new constructor")
         } catch (error) {
             throw createHttpError(500, error)
@@ -112,18 +119,38 @@ exports.postNewConstructor = [
 ]
 
 exports.postUpdateConstructor = [
+    constructorLogoMiddleware(),
     constructorIdParamValidation(),
     constructorBodyValidation(),
-    (req, res) => {
+    checkLogoValidity,
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            const errorMap = errors.mapped()
-            if (errorMap.id) {
-                throw createHttpError(404, "Constructor not found")
-            }
             throw createHttpError(400, errors.array())
         }
-        res.send("POST update constructor")
+
+        const file = req.file
+        try {
+            const extension = path.extname(file.originalname)
+            const { id, name, country } = matchedData(req)
+            const logoPath = `${id}${extension}`
+
+            await db.updateConstructor({
+                id: id,
+                name: name,
+                country: country,
+                logo_path: logoPath,
+            })
+
+            await fs.writeFile(
+                `./public/images/constructors/${logoPath}`,
+                file.buffer
+            )
+
+            res.send("POST update constructor")
+        } catch (error) {
+            throw createHttpError(500, error)
+        }
     },
 ]
 

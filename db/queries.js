@@ -69,13 +69,35 @@ async function getConstructorDetails(id) {
     return constructor
 }
 
-async function addConstructor({ name, country, logo_path }) {
-    const { rows } = await db.query(
-        "INSERT INTO constructors (name, country, logo_path) VALUES($1, $2, $3) RETURNING id;",
-        [name, country, logo_path]
-    )
+async function addConstructor({ name, country, logoFileExtension }) {
+    const client = await db.connect()
+    try {
+        await client.query(`BEGIN`)
+        const { rows } = await client.query(
+            `        
+            INSERT INTO constructors (name, country) 
+            VALUES($1, $2) 
+            RETURNING id;`,
+            [name, country]
+        )
+        const constructorId = rows[0].id
+        console.log(typeof logoFileExtension)
 
-    return rows[0].id
+        await client.query(
+            `        
+            UPDATE constructors
+            SET logo_path=CONCAT($1, $2::text)
+            WHERE id = $1;`,
+            [constructorId, logoFileExtension]
+        )
+        await client.query("COMMIT")
+        return constructorId
+    } catch (error) {
+        await client.query("ROLLBACK")
+        throw error
+    } finally {
+        client.release()
+    }
 }
 
 async function updateConstructor({ id, name, country, logo_path }) {
