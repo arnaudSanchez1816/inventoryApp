@@ -5,6 +5,7 @@ const {
     matchedData,
 } = require("express-validator")
 const createHttpError = require("http-errors")
+const { addPowertrain, updatePowertrain } = require("../db/queries")
 
 //Validators
 const powertrainIdParamValidation = () => [
@@ -23,7 +24,7 @@ const powertrainBodyValidation = () => [
         .notEmpty()
         .isString()
         .withMessage("Name field is empty"),
-    body("engine-code")
+    body("engineCode")
         .trim()
         .notEmpty()
         .isString()
@@ -54,12 +55,12 @@ const powertrainBodyValidation = () => [
         .isInt({ min: 0 })
         .withMessage("Torque value is invalid")
         .toInt(),
-    body("configuration")
+    body("engineLayout")
         .trim()
         .notEmpty()
-        .withMessage("Engine configuration required")
+        .withMessage("Engine layout required")
         .isString()
-        .withMessage("Engine configuration is invalid"),
+        .withMessage("Engine layout is invalid"),
     body("transmission")
         .trim()
         .notEmpty()
@@ -72,7 +73,7 @@ const powertrainBodyValidation = () => [
         .withMessage("Engine drivetrain type required")
         .isString()
         .withMessage("Engine drivetrain type is invalid"),
-    body("trims").trim().optional().isInt({ min: 0 }).toInt(),
+    body("trims").trim().default([]).isInt({ min: 0 }).toInt().toArray(),
 ]
 
 exports.postNewPowertrain = [
@@ -84,9 +85,9 @@ exports.postNewPowertrain = [
         }
         try {
             const powertrainData = matchedData(req)
-            console.log(powertrainData)
+            await addPowertrain(powertrainData.modelId, powertrainData)
 
-            res.send("POST create powertrain ")
+            res.redirect(`/cars/${powertrainData.modelId}`)
         } catch (error) {
             throw createHttpError(500, error.message)
         }
@@ -96,15 +97,24 @@ exports.postNewPowertrain = [
 exports.updatePowertrain = [
     powertrainIdParamValidation(),
     powertrainBodyValidation(),
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors.array())
         }
-        const powertrainData = matchedData(req)
-        console.log(powertrainData)
 
-        res.send("POST update powertrain ")
+        try {
+            const powertrainData = matchedData(req)
+            console.log(powertrainData)
+            await updatePowertrain({
+                ...powertrainData,
+                id: powertrainData.powertrainId,
+            })
+
+            res.redirect(`/cars/${powertrainData.modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 

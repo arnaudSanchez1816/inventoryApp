@@ -176,3 +176,33 @@ BEGIN
     end loop;
 END;
 $$;
+
+CREATE OR REPLACE PROCEDURE update_powertrain(
+    in_id integer,
+    in_name text,
+    in_type text,
+    in_engine_code text,
+    in_displacement float,
+    in_power integer,
+    in_torque integer,
+    in_engine_layout text,
+    in_transmission text,
+    in_drivetrain text,
+    in_trim_ids integer[]
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    trim_id integer;
+BEGIN 
+    UPDATE powertrains
+        SET name=in_name, engine_code=in_engine_code, type=in_type, displacement=in_displacement,
+        power=in_power, torque=in_torque, engine_layout=in_engine_layout, transmission=in_transmission, drivetrain=in_drivetrain
+    WHERE id=in_id;
+
+    DELETE FROM trim_powertrain_compatibilities WHERE powertrain_id=in_id;
+
+    FOREACH trim_id IN ARRAY in_trim_ids loop
+    INSERT INTO trim_powertrain_compatibilities (trim_id, powertrain_id) VALUES (trim_id, in_id);
+    END loop;
+END;
+$$;

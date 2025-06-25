@@ -170,6 +170,72 @@ async function addCarTrim(modelId, name) {
     ])
 }
 
+// Powertrains
+
+async function addPowertrain(
+    modelId,
+    {
+        name,
+        engineCode,
+        type,
+        displacement,
+        power,
+        torque,
+        engineLayout,
+        transmission,
+        drivetrain,
+        trims,
+    }
+) {
+    await db.query(
+        "CALL insert_powertrain($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);",
+        [
+            name,
+            type,
+            engineCode,
+            displacement,
+            power,
+            torque,
+            engineLayout,
+            transmission,
+            drivetrain,
+            modelId,
+            trims,
+        ]
+    )
+}
+
+async function updatePowertrain({
+    id,
+    name,
+    engineCode,
+    type,
+    displacement,
+    power,
+    torque,
+    engineLayout,
+    transmission,
+    drivetrain,
+    trims,
+}) {
+    await db.query(
+        "CALL update_powertrain($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);",
+        [
+            id,
+            name,
+            type,
+            engineCode,
+            displacement,
+            power,
+            torque,
+            engineLayout,
+            transmission,
+            drivetrain,
+            trims,
+        ]
+    )
+}
+
 module.exports = {
     getConstructors,
     getConstructorDetails,
@@ -184,4 +250,6 @@ module.exports = {
     updateCarTrim,
     deleteCarTrim,
     addCarTrim,
+    addPowertrain,
+    updatePowertrain,
 }

@@ -7,10 +7,10 @@ WITH get_model AS (
     WHERE m.id = $1
 ),
 get_powertrains_trims AS (
-    SELECT powertrains.*, array_agg(trims.id) as compatible_trims
+    SELECT powertrains.*, COALESCE(array_agg(trims.id) FILTER (WHERE trims.id IS NOT NULL), ARRAY[]::integer[]) as compatible_trims
     FROM powertrains
-    JOIN trim_powertrain_compatibilities on trim_powertrain_compatibilities.powertrain_id = powertrains.id
-    JOIN trims on trims.id = trim_powertrain_compatibilities.trim_id
+    LEFT JOIN trim_powertrain_compatibilities on trim_powertrain_compatibilities.powertrain_id = powertrains.id
+    LEFT JOIN trims on trims.id = trim_powertrain_compatibilities.trim_id
     JOIN get_model AS model_details ON model_details.id = powertrains.model_id
     GROUP BY powertrains.id
     ORDER BY powertrains.name
