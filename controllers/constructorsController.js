@@ -30,17 +30,6 @@ const constructorLogoMiddleware = () =>
         limits: { files: 1, fileSize: MAX_FILE_SIZE },
     }).single("logo")
 
-const checkLogoValidity = (req, res, next) => {
-    const file = req.file
-    if (!file) {
-        throw createHttpError(400, "Logo file missing")
-    }
-    if (!LOGO_FILE_TYPES.includes(file.mimetype)) {
-        throw createHttpError(400, "Invalid file type")
-    }
-    next()
-}
-
 exports.getConstructor = [
     constructorIdParamValidation(),
     async (req, res, next) => {
@@ -89,13 +78,19 @@ exports.getConstructors = async (req, res) => {
 exports.postNewConstructor = [
     constructorLogoMiddleware(),
     constructorBodyValidation(),
-    checkLogoValidity,
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors.array())
         }
         const file = req.file
+        if (!file) {
+            throw createHttpError(400, "Logo file missing")
+        }
+        if (!LOGO_FILE_TYPES.includes(file.mimetype)) {
+            throw createHttpError(400, "Invalid file type")
+        }
+
         try {
             const extension = path.extname(file.originalname)
             const { name, country } = matchedData(req)
@@ -111,7 +106,7 @@ exports.postNewConstructor = [
                 `./public/images/constructors/${logoPath}`,
                 file.buffer
             )
-            res.send("POST new constructor")
+            res.redirect(`${constructorId}`)
         } catch (error) {
             throw createHttpError(500, error)
         }
@@ -122,7 +117,6 @@ exports.postUpdateConstructor = [
     constructorLogoMiddleware(),
     constructorIdParamValidation(),
     constructorBodyValidation(),
-    checkLogoValidity,
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -130,24 +124,29 @@ exports.postUpdateConstructor = [
         }
 
         const file = req.file
+        if (file && !LOGO_FILE_TYPES.includes(file.mimetype)) {
+            throw createHttpError(400, "Invalid file type")
+        }
+
         try {
-            const extension = path.extname(file.originalname)
             const { id, name, country } = matchedData(req)
-            const logoPath = `${id}${extension}`
+            const constructorData = { id, name, country }
+            if (file) {
+                const extension = path.extname(file.originalname)
+                const logoPath = `${id}${extension}`
+                constructorData.logoPath = logoPath
+            }
 
-            await db.updateConstructor({
-                id: id,
-                name: name,
-                country: country,
-                logo_path: logoPath,
-            })
+            await db.updateConstructor(constructorData)
 
-            await fs.writeFile(
-                `./public/images/constructors/${logoPath}`,
-                file.buffer
-            )
+            if (file) {
+                await fs.writeFile(
+                    `./public/images/constructors/${constructorData.logoPath}`,
+                    file.buffer
+                )
+            }
 
-            res.send("POST update constructor")
+            res.redirect(`${id}`)
         } catch (error) {
             throw createHttpError(500, error)
         }

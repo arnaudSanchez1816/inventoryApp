@@ -99,11 +99,18 @@ async function addConstructor({ name, country, logoFileExtension }) {
     }
 }
 
-async function updateConstructor({ id, name, country, logo_path }) {
-    await db.query(
-        "UPDATE constructors SET name=$2, country=$3, logo_path=$4 WHERE id = $1;",
-        [id, name, country, logo_path]
-    )
+async function updateConstructor({ id, name, country, logoPath }) {
+    if (logoPath === undefined) {
+        await db.query(
+            "UPDATE constructors SET name=$2, country=$3 WHERE id = $1;",
+            [id, name, country]
+        )
+    } else {
+        await db.query(
+            "UPDATE constructors SET name=$2, country=$3, logo_path=$4 WHERE id = $1;",
+            [id, name, country, logoPath]
+        )
+    }
 }
 
 async function deleteConstructor(id) {
