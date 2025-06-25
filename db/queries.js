@@ -81,7 +81,6 @@ async function addConstructor({ name, country, logoFileExtension }) {
             [name, country]
         )
         const constructorId = rows[0].id
-        console.log(typeof logoFileExtension)
 
         await client.query(
             `        
