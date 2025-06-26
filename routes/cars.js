@@ -1,12 +1,12 @@
 var express = require("express")
 const {
     getCarModel,
-    getCarModels,
-    getNewCarModel,
     postNewCarModel,
     addNewCarConfiguration,
     updateCarConfiguration,
     deleteCarConfiguration,
+    deleteCarModel,
+    updateCarModel,
 } = require("../controllers/carsController")
 var router = express.Router()
 
@@ -16,11 +16,9 @@ router.post("/:modelId/config/update", updateCarConfiguration)
 router.post("/:modelId/config/delete", deleteCarConfiguration)
 
 // models
-router.get("/new", getNewCarModel)
 router.post("/new", postNewCarModel)
-router.get("/:id", getCarModel)
-
-// All car models
-router.get("/", getCarModels)
+router.post("/:modelId/delete", deleteCarModel)
+router.post("/:modelId/update", updateCarModel)
+router.get("/:modelId", getCarModel)
 
 module.exports = router

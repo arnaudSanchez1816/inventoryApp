@@ -37,6 +37,34 @@ async function getCarModelDetails(id) {
     return modelDetails
 }
 
+async function addCarModel({ name, year, constructorId }) {
+    const { rows } = await db.query(
+        `
+        INSERT INTO models(name, year, constructor_id)
+        VALUES($1, $2, $3)
+        RETURNING id;
+        `,
+        [name, year, constructorId]
+    )
+
+    return rows[0].id
+}
+
+async function updateCarModel({ name, year, modelId }) {
+    await db.query(
+        `
+        UPDATE models
+        SET name=$2, year=$3
+        WHERE id=$1
+        `,
+        [modelId, name, year]
+    )
+}
+
+async function deleteCarModel({ modelId }) {
+    await db.query("DELETE FROM models WHERE id=$1", [modelId])
+}
+
 // Constructors
 async function getConstructors({ nbItems = 20, sortBy = "id" } = {}) {
     const { rows } = await db.query(
@@ -241,6 +269,9 @@ module.exports = {
     getConstructorDetails,
     getCarModels,
     getCarModelDetails,
+    addCarModel,
+    updateCarModel,
+    deleteCarModel,
     addConstructor,
     updateConstructor,
     deleteConstructor,

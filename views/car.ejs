@@ -11,6 +11,8 @@
                 </p>
                 <h1><%= model.name %></h1>
                 <p><%= model.year %></p>
+                <button id="edit-model-btn" type="button">Edit</button>
+                <button id="delete-model-btn" type="button">Delete</button>
             </div>
         </header>
         <main>
@@ -101,6 +103,8 @@
                 </div>
             </div>
         </main>
+        <%- include('partials/models/editCarModelModal.ejs', {model:model}) %>
+        <%- include('partials/models/deleteCarModelModal.ejs', {model:model}) %>
     </body>
     <script type="module" src="/javascripts/car.js" defer>
     </script>

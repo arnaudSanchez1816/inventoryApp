@@ -22,3 +22,7 @@ const deleteBtn = document.querySelector("#delete-constructor-btn")
 const deleteDialog = new Dialog(".delete-constructor-dialog")
 const deleteForm = new DeleteForm(deleteDialog.dialog.querySelector("form"))
 deleteBtn.addEventListener("click", () => deleteDialog.show())
+
+const addModelBtn = document.querySelector("#add-model-btn")
+const addModelDialog = new Dialog(".add-model-dialog")
+addModelBtn.addEventListener("click", () => addModelDialog.show())

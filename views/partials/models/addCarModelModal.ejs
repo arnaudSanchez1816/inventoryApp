@@ -1,0 +1,26 @@
+<dialog class="add-model-dialog">
+    <section>
+        <header>
+            <h1>Add model</h1>
+        </header>
+        <form action="/cars/new" method="post">
+            <input type="hidden" name="constructorId" value="<%= ct.id %>" />
+            <label>
+                Name
+                <input type="text" name="name" />
+            </label>
+            <label>
+                Year
+                <input type="number" name="year" min="0" maxlength="4" />
+            </label>
+            <label
+                >Password
+                <input type="password" name="password" />
+            </label>
+            <button class="dialog-btn submit" type="submit">Add</button>
+            <button class="dialog-btn cancel close" type="button">
+                Cancel
+            </button>
+        </form>
+    </section>
+</dialog>

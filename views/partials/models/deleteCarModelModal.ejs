@@ -1,0 +1,15 @@
+<dialog class="delete-model-dialog">
+    <section>
+        <header>
+            <h1>Delete model</h1>
+        </header>
+        <form action="/cars/<%= model.id %>/delete" method="post">
+            <%- include('../components/deleteConfirmationInput.ejs') %> <%-
+            include('../components/passwordInput.ejs') %>
+            <button class="dialog-btn submit" type="submit">Delete</button>
+            <button class="dialog-btn cancel close" type="button">
+                Cancel
+            </button>
+        </form>
+    </section>
+</dialog>

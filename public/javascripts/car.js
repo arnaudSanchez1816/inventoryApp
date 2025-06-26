@@ -99,3 +99,12 @@ configurations.forEach((config) => {
     const deleteBtn = config.querySelector(".delete")
     deleteBtn.addEventListener("click", () => deleteDialog.show())
 })
+
+// Model
+const editModelBtn = document.querySelector("#edit-model-btn")
+const editModelDialog = new Dialog(".edit-model-dialog")
+editModelBtn.addEventListener("click", () => editModelDialog.show())
+
+const deleteModelBtn = document.querySelector("#delete-model-btn")
+const deleteModelDialog = new Dialog(".delete-model-dialog")
+deleteModelBtn.addEventListener("click", () => deleteModelDialog.show())

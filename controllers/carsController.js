@@ -5,10 +5,18 @@ const {
     body,
 } = require("express-validator")
 const createHttpError = require("http-errors")
-const { getCarModels, getCarModelDetails, getCars } = require("../db/queries")
+const {
+    getCarModelDetails,
+    getCars,
+    addCarModel,
+    deleteCarModel,
+    updateCarModel,
+} = require("../db/queries")
 
 //Validators
-const carModelIdParamValidation = () => [param("id").isInt({ min: 0 }).toInt()]
+const carModelIdParamValidation = () => [
+    param("modelId").isInt({ min: 0 }).toInt(),
+]
 
 exports.getCarModel = [
     carModelIdParamValidation(),
@@ -17,11 +25,11 @@ exports.getCarModel = [
         if (!errors.isEmpty()) {
             return next()
         }
-        const { id } = matchedData(req)
+        const { modelId } = matchedData(req)
 
         const [modelDetails, modelCars] = await Promise.all([
-            getCarModelDetails(id),
-            getCars(id),
+            getCarModelDetails(modelId),
+            getCars(modelId),
         ])
 
         if (!modelDetails) {
@@ -39,23 +47,96 @@ exports.getCarModel = [
     },
 ]
 
-exports.getCarModels = [
+exports.postNewCarModel = [
+    [
+        body("name")
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage("Name is empty")
+            .isString()
+            .withMessage("Name is not a string"),
+        body("year")
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage("Year is empty")
+            .isDate({ format: "YYYY" })
+            .withMessage("Year is not a valid date")
+            .toInt(),
+        body("constructorId")
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage("Constructor id is empty")
+            .isInt({ min: 0 })
+            .withMessage("Constructor id is invalid")
+            .toInt(),
+    ],
     async (req, res) => {
-        const models = await getCarModels()
-        res.json(models)
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            throw createHttpError(400, errors.array())
+        }
+        try {
+            const data = matchedData(req)
+            const modelId = await addCarModel(data)
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 
-exports.getNewCarModel = (req, res) => {
-    res.send("GET new car model")
-}
+exports.updateCarModel = [
+    carModelIdParamValidation(),
+    [
+        body("name")
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage("Name is empty")
+            .isString()
+            .withMessage("Name is not a string"),
+        body("year")
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage("Year is empty")
+            .isDate({ format: "YYYY" })
+            .withMessage("Year is not a valid date")
+            .toInt(),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            throw createHttpError(400, errors.array())
+        }
+        try {
+            const data = matchedData(req)
+            const { modelId } = data
+            await updateCarModel(data)
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
+    },
+]
 
-const postNewCarModelValidation = []
-
-exports.postNewCarModel = [
-    postNewCarModelValidation,
-    (req, res) => {
-        res.send("POST new car model")
+exports.deleteCarModel = [
+    carModelIdParamValidation(),
+    async (req, res) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            throw createHttpError(400, errors.array())
+        }
+        try {
+            const { modelId } = matchedData(req)
+            await deleteCarModel({ modelId })
+            res.send("/")
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 
