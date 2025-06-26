@@ -155,11 +155,18 @@ exports.postUpdateConstructor = [
 
 exports.deleteConstructor = [
     constructorIdParamValidation(),
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(404, errors.array())
         }
-        res.send("DELETE constructor")
+
+        try {
+            const { id } = matchedData(req)
+            await db.deleteConstructor(id)
+            res.redirect("/")
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
