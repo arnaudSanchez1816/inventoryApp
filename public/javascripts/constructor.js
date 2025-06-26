@@ -2,6 +2,7 @@ import {
     ConstructorLogoInput,
     onConstructorFormSubmit,
 } from "./constructorUtils.js"
+import DeleteForm from "./deleteForm.js"
 import Dialog from "./dialog.js"
 
 const editBtn = document.querySelector("#edit-constructor-btn")
@@ -16,3 +17,8 @@ const editForm = editDialog.dialog.querySelector("form")
 editForm.addEventListener("submit", (e) =>
     onConstructorFormSubmit(e, logoInput)
 )
+
+const deleteBtn = document.querySelector("#delete-constructor-btn")
+const deleteDialog = new Dialog(".delete-constructor-dialog")
+const deleteForm = new DeleteForm(deleteDialog.dialog.querySelector("form"))
+deleteBtn.addEventListener("click", () => deleteDialog.show())

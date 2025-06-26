@@ -1,0 +1,23 @@
+<dialog class="delete-constructor-dialog">
+    <section>
+        <header>
+            <h1>Delete constructor</h1>
+        </header>
+        <div>
+            <form action="/constructors/<%= ct.id %>/delete" method="post">
+                <label>
+                    <p>Enter "Delete" to confirm deletion</p>
+                    <input type="text" placeholder="Delete" class="delete" />
+                </label>
+                <label
+                    >Password
+                    <input type="password" name="password" />
+                </label>
+                <button class="dialog-btn submit" type="submit">Delete</button>
+                <button class="dialog-btn cancel close" type="button">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </section>
+</dialog>
