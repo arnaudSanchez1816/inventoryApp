@@ -61,8 +61,8 @@ exports.postNewCarModel = [
             .escape()
             .notEmpty()
             .withMessage("Year is empty")
-            .isDate({ format: "YYYY" })
-            .withMessage("Year is not a valid date")
+            .isInt({ allow_leading_zeroes: false, min: 1, max: 9999 })
+            .withMessage("Year is not valid")
             .toInt(),
         body("constructorId")
             .trim()
