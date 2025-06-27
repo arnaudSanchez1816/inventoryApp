@@ -106,7 +106,7 @@ exports.postNewConstructor = [
                 `./public/images/constructors/${logoPath}`,
                 file.buffer
             )
-            res.redirect(`${constructorId}`)
+            res.redirect(`/constructors/${constructorId}`)
         } catch (error) {
             throw createHttpError(500, error)
         }
@@ -146,7 +146,7 @@ exports.postUpdateConstructor = [
                 )
             }
 
-            res.redirect(`${id}`)
+            res.redirect(`/constructors/${id}`)
         } catch (error) {
             throw createHttpError(500, error)
         }
