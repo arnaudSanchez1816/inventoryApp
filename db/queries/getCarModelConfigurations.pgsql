@@ -4,16 +4,13 @@ SELECT
     c.powertrain_id,
     (powertrains.name || ' ' || trims.name) AS name,
     c.price,
-    i.stock,
+    c.stock,
     to_jsonb(trims) AS trim,
     to_jsonb(powertrains) AS powertrain
 FROM
-    cars AS c
+    configurations AS c
     JOIN trims ON trims.id = c.trim_id
     JOIN powertrains ON powertrains.id = c.powertrain_id
-    JOIN inventory AS i ON c.model_id = i.model_id
-    AND c.trim_id = i.trim_id
-    AND c.powertrain_id = i.powertrain_id
 WHERE
     c.model_id = $1
 GROUP BY
@@ -21,6 +18,6 @@ GROUP BY
     c.trim_id,
     c.powertrain_id,
     c.price,
-    i.stock,
+    c.stock,
     trims.id,
     powertrains.id;

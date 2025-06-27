@@ -43,8 +43,9 @@ CREATE TABLE IF NOT EXISTS trim_powertrain_compatibilities (
   CONSTRAINT fk_powertrain FOREIGN KEY (powertrain_id) REFERENCES powertrains(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS cars (
+CREATE TABLE IF NOT EXISTS configurations (
   price DECIMAL(9),
+  stock INTEGER,
   model_id INTEGER,
   trim_id INTEGER,
   powertrain_id INTEGER,
@@ -52,15 +53,6 @@ CREATE TABLE IF NOT EXISTS cars (
   CONSTRAINT fk_model FOREIGN KEY (model_id) REFERENCES models(id),
   CONSTRAINT fk_trim FOREIGN KEY (trim_id) REFERENCES trims(id),
   CONSTRAINT fk_powertrain FOREIGN KEY (powertrain_id) REFERENCES powertrains(id)
-);
-
-CREATE TABLE IF NOT EXISTS inventory (
-  stock INTEGER,
-  model_id INTEGER,
-  trim_id INTEGER,
-  powertrain_id INTEGER,
-  PRIMARY KEY (model_id, trim_id, powertrain_id),
-  CONSTRAINT fk_car FOREIGN KEY (model_id, trim_id, powertrain_id) REFERENCES cars(model_id, trim_id, powertrain_id)
 );
 
 INSERT INTO constructors (name, country, logo_path) 
@@ -113,41 +105,23 @@ VALUES
   (6, 6),
   (7, 6);
 
-INSERT INTO cars (price, model_id, trim_id, powertrain_id) 
+INSERT INTO configurations (price, stock, model_id, trim_id, powertrain_id) 
 VALUES
-  (675000, 1, 1, 1),
-  (64350, 2, 2, 2),
-  (68700, 2, 3, 2),
-  (66650, 2, 2, 3),
-  (71000, 2, 3, 3),
-  (73150, 2, 2, 4),
-  (77500, 2, 3, 4),
-  (16900, 3, 4, 5),
-  (18500, 3, 4, 6),
-  (19900, 3, 4, 7),
-  (19600, 3, 5, 5),
-  (21200, 3, 5, 6),
-  (22900, 3, 5, 7),
-  (22200, 3, 6, 6),
-  (25000, 3, 7, 6);
-
-INSERT INTO inventory (stock, model_id, trim_id, powertrain_id) 
-VALUES
-  (2, 1, 1, 1),
-  (20, 2, 2, 2),
-  (14, 2, 3, 2),
-  (24, 2, 2, 3),
-  (17, 2, 3, 3),
-  (21, 2, 2, 4),
-  (11, 2, 3, 4),
-  (240, 3, 4, 5),
-  (198, 3, 4, 6),
-  (174, 3, 4, 7),
-  (195, 3, 5, 5),
-  (164, 3, 5, 6),
-  (139, 3, 5, 7),
-  (157, 3, 6, 6),
-  (151, 3, 7, 6);
+  (675000, 2, 1, 1, 1),
+  (64350, 10, 2, 2, 2),
+  (68700, 11, 2, 3, 2),
+  (66650, 9, 2, 2, 3),
+  (71000, 18, 2, 3, 3),
+  (73150, 27, 2, 2, 4),
+  (77500, 16, 2, 3, 4),
+  (16900, 124, 3, 4, 5),
+  (18500, 39, 3, 4, 6),
+  (19900, 97, 3, 4, 7),
+  (19600, 64, 3, 5, 5),
+  (21200, 102, 3, 5, 6),
+  (22900, 140, 3, 5, 7),
+  (22200, 97, 3, 6, 6),
+  (25000, 61, 3, 7, 6);
 
 CREATE PROCEDURE insert_powertrain(
     in_name text,

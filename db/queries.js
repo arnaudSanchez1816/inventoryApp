@@ -65,13 +65,56 @@ async function deleteCarModel({ modelId }) {
     await db.query("DELETE FROM models WHERE id=$1", [modelId])
 }
 
+// Configs
+async function addNewConfiguration({
+    modelId,
+    trimId,
+    powertrainId,
+    price,
+    stock,
+}) {
+    await db.query(
+        `
+        INSERT INTO configurations(model_id, trim_id, powertrain_id, price, stock)
+        VALUES($1, $2, $3, $4, $5);
+        `,
+        [modelId, trimId, powertrainId, price, stock]
+    )
+}
+
+async function updateConfiguration({
+    modelId,
+    trimId,
+    powertrainId,
+    price,
+    stock,
+}) {
+    await db.query(
+        `
+        UPDATE configurations
+        SET price=$4, stock=$5
+        WHERE model_id=$1 AND trim_id=$2 AND powertrain_id=$3;
+        `,
+        [modelId, trimId, powertrainId, price, stock]
+    )
+}
+
+async function deleteConfiguration({ modelId, trimId, powertrainId }) {
+    await db.query(
+        `
+        DELETE FROM configurations
+        WHERE model_id=$1 AND trim_id=$2 AND powertrain_id=$3;`,
+        [modelId, trimId, powertrainId]
+    )
+}
+
 // Constructors
 async function getConstructors({ nbItems = 20, sortBy = "id" } = {}) {
     const { rows } = await db.query(
         `SELECT id, name, country, logo_path 
         FROM constructors 
         ORDER BY ${sortBy}
-        LIMIT $1`,
+        LIMIT $1;`,
         [nbItems]
     )
     rows.forEach((row) => {
@@ -283,4 +326,7 @@ module.exports = {
     addCarTrim,
     addPowertrain,
     updatePowertrain,
+    addNewConfiguration,
+    updateConfiguration,
+    deleteConfiguration,
 }
