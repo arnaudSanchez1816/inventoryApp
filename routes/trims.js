@@ -4,8 +4,10 @@ const {
     updateCarTrim,
     deleteCarTrim,
 } = require("../controllers/trimsController")
+const { validatePassword } = require("../middlewares/passwordValidation")
 var router = express.Router()
 
+router.use(validatePassword)
 // Trims
 router.post("/add", postNewCarTrim)
 router.post("/edit/:trimId", updateCarTrim)

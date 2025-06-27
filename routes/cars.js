@@ -8,8 +8,10 @@ const {
     deleteCarModel,
     updateCarModel,
 } = require("../controllers/carsController")
+const { validatePassword } = require("../middlewares/passwordValidation")
 var router = express.Router()
 
+router.post("/*splat", validatePassword)
 // configs
 router.post("/:modelId/config/new", addNewCarConfiguration)
 router.post("/:modelId/config/update", updateCarConfiguration)

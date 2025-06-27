@@ -10,6 +10,7 @@ const db = require("../db/queries")
 const multer = require("multer")
 const path = require("path")
 const fs = require("fs/promises")
+const { validatePassword } = require("../middlewares/passwordValidation")
 
 const MAX_FILE_SIZE = 2000000 // 2 MB
 const LOGO_FILE_TYPES = ["image/jpeg", "image/png", "image/svg+xml"]
@@ -77,6 +78,7 @@ exports.getConstructors = async (req, res) => {
 
 exports.postNewConstructor = [
     constructorLogoMiddleware(),
+    validatePassword,
     constructorBodyValidation(),
     async (req, res) => {
         const errors = validationResult(req)
@@ -115,6 +117,7 @@ exports.postNewConstructor = [
 
 exports.postUpdateConstructor = [
     constructorLogoMiddleware(),
+    validatePassword,
     constructorIdParamValidation(),
     constructorBodyValidation(),
     async (req, res) => {
@@ -154,6 +157,7 @@ exports.postUpdateConstructor = [
 ]
 
 exports.deleteConstructor = [
+    validatePassword,
     constructorIdParamValidation(),
     async (req, res) => {
         const errors = validationResult(req)

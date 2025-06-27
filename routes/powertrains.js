@@ -4,8 +4,10 @@ const {
     updatePowertrain,
     deletePowertrain,
 } = require("../controllers/powertrainsController")
+const { validatePassword } = require("../middlewares/passwordValidation")
 var router = express.Router()
 
+router.use(validatePassword)
 // Powertrains
 router.post("/add", postNewPowertrain)
 router.post("/edit/:powertrainId", updatePowertrain)
