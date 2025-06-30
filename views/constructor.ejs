@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html>
     <%- include('partials/head.ejs') %>
-    <body>
-        <header>
-            <a href="/">Home</a>
-            <div>
-                <span>Constructor</span>
-                <h1><%= constructor.name %></h1>
-            </div>
-        </header>
+    <body class="text-neutral-950">
+      <div class="flex flex-col h-svh bg-white">
+          <%- include('./partials/components/header.ejs') %>
         <main>
+          <div class="px-4">
+            <%- include('./partials/components/hr.ejs') %>
             <div>
-                <h2>Country</h2>
-                <p><%= constructor.country %></p>
+              <div class="grid grid-cols-2 items-center justify-center gap-6">
+                <img src="<%= constructor.logoPath %>" alt="<%= constructor.name %> logo" class="w-40 h-40 justify-self-end">
+                <div class="flex flex-col items-center justify-self-start">
+                  <h2 class="text-2xl font-medium"><%= constructor.name %></h2>
+                  <p class="font-medium"><%= constructor.country %></p>
+                </div>
+              </div>
+              <div class="flex gap-4 justify-center mt-4">
+                <button id="edit-constructor-btn" class="btn-primary grow-0 max-w-" type="button">Edit</button>
+                <button id="delete-constructor-btn" class="btn-primary grow-0 max-w-fit" type="button">Delete</button>
+              </div>
             </div>
-            <img src="<%= constructor.logoPath %>" alt="<%= constructor.name %> logo">
-            <button id="edit-constructor-btn" type="button">Edit constructor</button>
-            <button id="delete-constructor-btn" type="button">Delete constructor</button>
-            <h3>Car models</h3>
-            <% if (constructor.models.length > 0) { %>
-              <ul>
-                <% constructor.models.forEach((model) => { %>
-                  <li>
-                    <a href="/cars/<%= model.id %>"><%= model.name %></a>
-                  </li>
-                <% }) %>
-              </ul>
-            <% } else {%>
-              <p>No models yet</p>
-            <% } %>
-            <button id="add-model-btn" type="button">Add car model</button>
+            <div>
+              <h3 class="text-2xl font-medium mb-4">Models</h3>
+              <% if (constructor.models.length > 0) { %>
+                <ul>
+                  <% constructor.models.forEach((model) => { %>
+                    <li class="hover:bg-neutral-950/5 border-y border-neutral-950/10 py-2"
+                    >
+                      <a href="/cars/<%= model.id %>" class="flex gap-4 items-center w-full h-full p-2"
+                        ><%= model.name %> (<%= model.year %>)</a>
+                    </li>
+                  <% }) %>
+                </ul>
+              <% } else {%>
+                <p>No models yet</p>
+              <% } %>
+              <button id="add-model-btn" type="button" class="btn-primary mt-4">Add model</button>
+            </div>
+          </div>
         </main>
         <%- include('partials/constructors/editConstructorModal.ejs', {ct:constructor}) %>
         <%- include('partials/constructors/deleteConstructorModal.ejs', {ct:constructor}) %>
         <%- include('partials/models/addCarModelModal.ejs', {ct:constructor}) %>
+      </div>
     </body>
     <script type="module" src="/javascripts/constructor.js" defer></script>
 </html>

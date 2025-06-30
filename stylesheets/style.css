@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@layer components {
+    .btn-primary {
+        border-radius: calc(infinity * 1px);
+        padding-inline: --spacing(5);
+        padding-block: --spacing(2);
+        font-weight: var(--font-weight-semibold);
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+
+        &:hover {
+            @media (hover: hover) {
+                background-color: color-mix(
+                    in oklab,
+                    var(--color-neutral-950) 5%,
+                    transparent
+                );
+            }
+        }
+    }
+}
