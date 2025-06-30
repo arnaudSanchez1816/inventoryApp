@@ -1,18 +1,10 @@
 <!DOCTYPE html>
 <html>
     <%- include('partials/head.ejs') %>
-    <body>
-        <header>
-            <h1>Car inventory app</h1>
-        </header>
+    <body class="text-neutral-950">
+      <div class="flex flex-col h-svh bg-white">
+        <%- include('./partials/components/header.ejs') %>
         <main>
-            <form action="/s/" method="get">
-              <div>
-                  <label for="search">Search :</label>
-                  <input type="text" name="q" id="search">
-              </div>
-              <button type="submit">Search</button>
-            </form>
             <h2>Car models</h2>
             <ul>
               <% locals.models.forEach((model) => { %>
@@ -24,5 +16,7 @@
             <h3>Constructors</h3>
             <a href="/constructors">View All >></a>
         </main>
+      </div>
+      <%- include('./partials/components/menu.ejs') %>
     </body>
 </html>
