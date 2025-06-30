@@ -5,16 +5,54 @@
       <div class="flex flex-col h-svh bg-white">
         <%- include('./partials/components/header.ejs') %>
         <main>
-            <h2>Car models</h2>
-            <ul>
-              <% locals.models.forEach((model) => { %>
-                <li>
-                  <a href="/cars/<%= model.id %>"><%= model.constructor.name %> - <%= model.name %></a>
-                </li>
-              <% }) %>
-            </ul>
-            <h3>Constructors</h3>
-            <a href="/constructors">View All >></a>
+          <div class="px-4">
+            <%- include('./partials/components/hr.ejs') %>
+            <div >
+              <h2 class="text-xl font-medium my-4">Recently added car models</h2>
+              <ul>
+                <% locals.models.forEach((model) => { %>
+                  <li
+                  class="hover:bg-neutral-950/5"
+                  >
+                    <a 
+                    href="/cars/<%= model.id %>"
+                    class="flex gap-4 items-center w-full h-full p-2"
+                      >
+                      <img 
+                      src="<%= model.constructor.logoPath %>" 
+                      alt="<%= model.constructor.name %> logo" 
+                      class="w-8 h-8"
+                    >
+                      <span><%= model.name %></span>
+                    </a>
+                  </li>
+                <% }) %>
+              </ul>
+            </div>
+            <%- include('./partials/components/hr.ejs') %>
+            <div>
+              <h3 class="text-xl font-medium my-4">Recently added constructors</h3>
+              <ul>
+                <% locals.constructors.forEach((ct) => { %>
+                  <li
+                  class="hover:bg-neutral-950/5"
+                  >
+                    <a 
+                    href="/constructors/<%= ct.id %>"
+                    class="flex gap-4 items-center w-full h-full p-2"
+                      >
+                      <img 
+                        src="<%= ct.logoPath %>" 
+                        alt="<%= ct.name %> logo" 
+                        class="w-8 h-8"
+                      >
+                      <span><%= ct.name %></span>
+                    </a>
+                  </li>
+                <% }) %>
+              </ul>
+            </div>
+          </div>
         </main>
       </div>
       <%- include('./partials/components/menu.ejs') %>

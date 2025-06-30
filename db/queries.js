@@ -3,13 +3,17 @@ const fs = require("fs/promises")
 const path = require("path")
 const { convertConstructorLogoPath } = require("../utils/utils")
 
-async function getCarModels({ nbItems = 20, sortBy = "id" } = {}) {
+async function getCarModels({
+    nbItems = 20,
+    sortBy = "id",
+    order = "desc",
+} = {}) {
     const { rows } = await db.query(
         `SELECT models.id, models.name, year, json_build_object('id', c.id, 'name', c.name, 'country', c.country, 'logo_path', logo_path) constructor
         FROM models 
         JOIN constructors AS c ON models.constructor_id = c.id 
         GROUP BY models.id, c.id
-        ORDER BY ${sortBy}
+        ORDER BY ${sortBy}  ${order.toUpperCase() === "DESC" ? "DESC" : "ASC"}
         LIMIT $1`,
         [nbItems]
     )
@@ -109,11 +113,15 @@ async function deleteConfiguration({ modelId, trimId, powertrainId }) {
 }
 
 // Constructors
-async function getConstructors({ nbItems = 20, sortBy = "id" } = {}) {
+async function getConstructors({
+    nbItems = 20,
+    sortBy = "id",
+    order = "desc",
+} = {}) {
     const { rows } = await db.query(
         `SELECT id, name, country, logo_path 
         FROM constructors 
-        ORDER BY ${sortBy}
+        ORDER BY ${sortBy} ${order.toUpperCase() === "DESC" ? "DESC" : "ASC"}
         LIMIT $1;`,
         [nbItems]
     )
