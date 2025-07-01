@@ -22,18 +22,15 @@
         <%- include('./hr.ejs') %>
         <div>
             <form action="/s/" method="get" class="flex items-center gap-2">
-                <input
-                    type="text"
-                    name="q"
-                    id="search"
-                    class="h-min rounded-md border-2"
-                />
-                <button
-                    type="submit"
-                    class="rounded-md p-1 px-2 hover:bg-neutral-950/5"
-                >
-                    Search
-                </button>
+                <div class="flex w-full gap-2">
+                    <input
+                        type="text"
+                        name="q"
+                        id="search"
+                        class="input-primary min-w-0 flex-0 grow"
+                    />
+                    <button type="submit" class="btn-primary">Search</button>
+                </div>
             </form>
         </div>
         <%- include('./hr.ejs') %>

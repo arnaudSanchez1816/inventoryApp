@@ -223,12 +223,17 @@ async function searchConstructors(name) {
 
 async function searchCarModels(name) {
     const { rows } = await db.query(
-        `SELECT *
-        FROM models 
-        WHERE name ILIKE '%' || $1 || '%'
-        ORDER BY name`,
+        `SELECT models.*, to_jsonb(constructors) constructor
+        FROM models
+        LEFT JOIN constructors ON constructors.id = models.constructor_id
+        WHERE models.name ILIKE '%' || $1 || '%'
+        ORDER BY models.name;`,
         [name]
     )
+
+    rows.forEach((row) => {
+        convertConstructorLogoPath(row.constructor)
+    })
 
     return rows
 }

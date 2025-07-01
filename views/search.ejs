@@ -2,39 +2,52 @@
 <html>
     <%- include('partials/head.ejs') %>
     <body>
-        <header>
-            <a href="/">Home</a>
-            <h1>Car inventory app</h1>
-        </header>
+        <%- include('./partials/components/header.ejs') %>
         <main>
+          <%- include('./partials/components/hr.ejs') %>
+          <div class="px-4">
             <form action="/s/" method="get">
-                <div>
-                    <label for="search">Search :</label>
-                    <input type="text" name="q" id="search" value="<%= locals.query %>">
-                </div>
-                <button type="submit">Search</button>
+              <div class="flex gap-4 items-center">
+                <input type="text" name="q" id="search" value="<%= locals.query %>" class="input-primary w-full max-w-lg">
+                <button type="submit" class="btn-primary">Search</button>
+              </div>
             </form>
-            <h2>Car models</h2>
-            <ul>
-              <% models.forEach((model) => { %>
-                <li>
-                  <a href="/cars/<%= model.id %>"><%= model.constructor.name %> - <%= model.name %></a>
-                </li>
-              <% }) %>
-            </ul>
-            <h3>Constructors</h3>
-            <ul>
-                <% constructors.forEach((c) => { %>
-                  <li>
-                    <a href="/constructors/<%= c.id %>">
-                        <div>
-                            <img src="<%= c.logoPath %>" alt="<%= c.name %> logo" width="60" height="60">
-                            <span><%= c.name %></span>
-                        </div>
-                    </a>
-                  </li>
-                <% }) %>
-              </ul>
+            <%- include('./partials/components/hr.ejs') %>
+            <% if (models && models.length > 0) { %>
+              <div>
+                <h2 class="text-2xl font-bold">Car models</h2>
+                <ul>
+                  <% models.forEach((model) => { %>
+                    <li class="hover:bg-neutral-950/5">
+                      <a href="/cars/<%= model.id %>" class="flex gap-4 items-center w-full h-full p-2">
+                        <img src="<%= model.constructor.logoPath %>" alt="<%= model.constructor.name %> logo" class="w-8 h-8">
+                        <span><%= model.name %> (<%= model.year %>)</span>
+                      </a>
+                    </li>
+                  <% }) %>
+                </ul>
+              </div>
+            <% } %>
+            <% if (constructors && constructors.length > 0) { %>
+              <div>
+                <h3 class="text-2xl font-bold">Constructors</h3>
+                <ul>
+                    <% constructors.forEach((c) => { %>
+                      <li
+                      class="hover:bg-neutral-950/5"
+                      >
+                        <a href="/constructors/<%= c.id %>" class="flex gap-4 items-center w-full h-full p-2"
+                          class="flex gap-4 items-center w-full h-full p-2"
+                        >
+                          <img src="<%= c.logoPath %>" alt="<%= c.name %> logo" class="w-8 h-8">
+                          <span><%= c.name %></span>
+                        </a>
+                      </li>
+                    <% }) %>
+                  </ul>
+              </div>
+            <% } %>
+          </div>
         </main>
     </body>
 </html>

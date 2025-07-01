@@ -43,4 +43,17 @@
             }
         }
     }
+
+    .input-primary {
+        border-style: var(--tw-border-style);
+        border-width: 1px;
+        border-radius: var(--radius-lg);
+        padding-inline: calc(var(--spacing) * 3);
+        padding-block: calc(var(--spacing) * 1);
+        border-color: color-mix(
+            in oklab,
+            var(--color-neutral-950) 10%,
+            transparent
+        );
+    }
 }
