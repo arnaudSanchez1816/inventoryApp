@@ -7,7 +7,7 @@
             <div class="px-4">
                 <%- include('./partials/components/hr.ejs') %>
                 <h2 class="text-2xl font-bold mb-4">Car Models</h2>
-                <div class="flex gap-2 mt-4">
+                <div class="flex gap-2 mt-4 flex-wrap w-full">
                     <% for (const key in cars) { %>
                         <a href="/cars/#id_<%= key %>" class="block text-center w-12 h-12 font-medium text-2xl rounded-full border border-neutral-950/10 hover:bg-neutral-950/10  p-2"><%= key %></a>
                     <% } %>
