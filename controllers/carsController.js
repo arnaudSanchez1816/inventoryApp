@@ -7,7 +7,7 @@ const {
 const createHttpError = require("http-errors")
 const {
     getCarModelDetails,
-    getCars,
+    getConfigurations,
     addCarModel,
     deleteCarModel,
     updateCarModel,
@@ -29,7 +29,7 @@ exports.getCarModel = [
 
         const [modelDetails, modelCars] = await Promise.all([
             getCarModelDetails(modelId),
-            getCars(modelId),
+            getConfigurations(modelId),
         ])
 
         if (!modelDetails) {

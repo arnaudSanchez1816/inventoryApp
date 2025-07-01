@@ -70,6 +70,16 @@ async function deleteCarModel({ modelId }) {
 }
 
 // Configs
+async function getConfigurations(modelId) {
+    const sqlString = await fs.readFile(
+        path.join(__dirname, "queries/getCarModelConfigurations.pgsql"),
+        "utf-8"
+    )
+    const { rows } = await db.query(sqlString, [modelId])
+
+    return rows
+}
+
 async function addNewConfiguration({
     modelId,
     trimId,
@@ -196,16 +206,6 @@ async function deleteConstructor(id) {
     await db.query("DELETE FROM constructors WHERE id = $1", [id])
 }
 
-async function getCars(modelId) {
-    const sqlString = await fs.readFile(
-        path.join(__dirname, "queries/getCarModelConfigurations.pgsql"),
-        "utf-8"
-    )
-    const { rows } = await db.query(sqlString, [modelId])
-
-    return rows
-}
-
 async function searchConstructors(name) {
     const { rows } = await db.query(
         `SELECT *
@@ -326,7 +326,7 @@ module.exports = {
     addConstructor,
     updateConstructor,
     deleteConstructor,
-    getCars,
+    getConfigurations,
     searchCarModels,
     searchConstructors,
     updateCarTrim,

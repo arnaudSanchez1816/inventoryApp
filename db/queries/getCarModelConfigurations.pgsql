@@ -2,7 +2,7 @@ SELECT
     c.model_id,
     c.trim_id,
     c.powertrain_id,
-    (powertrains.name || ' ' || trims.name) AS name,
+    (powertrains.name || ' ' || trims.display_name) AS name,
     c.price,
     c.stock,
     to_jsonb(trims) AS trim,
