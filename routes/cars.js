@@ -7,6 +7,7 @@ const {
     deleteCarConfiguration,
     deleteCarModel,
     updateCarModel,
+    getCarModels,
 } = require("../controllers/carsController")
 const { validatePassword } = require("../middlewares/passwordValidation")
 var router = express.Router()
@@ -22,5 +23,6 @@ router.post("/new", postNewCarModel)
 router.post("/:modelId/delete", deleteCarModel)
 router.post("/:modelId/update", updateCarModel)
 router.get("/:modelId", getCarModel)
+router.get("/", getCarModels)
 
 module.exports = router

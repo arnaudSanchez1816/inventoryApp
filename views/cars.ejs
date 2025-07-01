@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <%- include('partials/head.ejs') %>
+    <body>
+        <%- include('./partials/components/header.ejs') %>
+        <main>
+            <div class="px-4">
+                <%- include('./partials/components/hr.ejs') %>
+                <h2 class="text-2xl font-bold mb-4">Car Models</h2>
+                <div class="flex gap-2 mt-4">
+                    <% for (const key in cars) { %>
+                        <a href="/cars/#id_<%= key %>" class="block text-center w-12 h-12 font-medium text-2xl rounded-full border border-neutral-950/10 hover:bg-neutral-950/10  p-2"><%= key %></a>
+                    <% } %>
+                </div>
+                <%- include('./partials/components/hr.ejs') %>
+                <div>
+                    <% for (const key in cars) { %>
+                        <div>
+                            <p class="font-medium text-2xl"><%= key %></p>
+                            <ul id="id_<%= key %>" class="my-2">
+                                <% cars[key].forEach((car) => { %>
+                                    <li
+                                    class="hover:bg-neutral-950/5"
+                                    >
+                                        <a href="/cars/<%= car.id %>"
+                                            class="flex gap-4 items-center w-full h-full p-2"
+                                        >
+                                            <img 
+                                            src="<%= car.constructor.logoPath %>" 
+                                            alt="<%= car.constructor.name %> logo" 
+                                            class="w-8 h-8"
+                                          >
+                                          <span><%= car.name %></span></a>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+        <script type="module" src="/javascripts/cars.js" defer></script>
+    </body>
+</html>

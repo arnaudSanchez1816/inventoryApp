@@ -9,10 +9,9 @@ async function getCarModels({
     order = "desc",
 } = {}) {
     const { rows } = await db.query(
-        `SELECT models.id, models.name, year, json_build_object('id', c.id, 'name', c.name, 'country', c.country, 'logo_path', logo_path) constructor
+        `SELECT models.id, models.name, year, to_jsonb(c) constructor
         FROM models 
         JOIN constructors AS c ON models.constructor_id = c.id 
-        GROUP BY models.id, c.id
         ORDER BY ${sortBy}  ${order.toUpperCase() === "DESC" ? "DESC" : "ASC"}
         LIMIT $1`,
         [nbItems]

@@ -11,6 +11,7 @@ const {
     addCarModel,
     deleteCarModel,
     updateCarModel,
+    getCarModels,
 } = require("../db/queries")
 
 //Validators
@@ -44,6 +45,34 @@ exports.getCarModel = [
             powertrains: modelDetails.powertrains,
             trims: modelDetails.trims,
         })
+    },
+]
+
+exports.getCarModels = [
+    async (req, res) => {
+        try {
+            const cars = await getCarModels({ sortBy: "name", order: "asc" })
+
+            const carsMap = {}
+            cars.forEach((c) => {
+                const initial = c.name.toUpperCase()[0]
+                let mapKey = "#"
+                if (initial.match(/[A-Z]/)) {
+                    mapKey = initial
+                }
+                if (!carsMap[mapKey]) {
+                    carsMap[mapKey] = []
+                }
+
+                carsMap[mapKey].push(c)
+            })
+
+            res.render("cars", {
+                cars: carsMap,
+            })
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 

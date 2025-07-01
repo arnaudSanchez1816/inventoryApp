@@ -59,7 +59,7 @@ exports.getConstructors = async (req, res) => {
     const constructorMap = {}
     constructors.forEach((c) => {
         const initial = c.name.toUpperCase()[0]
-        let mapKey = "others"
+        let mapKey = "#"
         if (initial.match(/[A-Z]/)) {
             mapKey = initial
         }
