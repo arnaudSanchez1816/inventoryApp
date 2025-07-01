@@ -5,7 +5,8 @@
         <%- include('./partials/components/header.ejs') %>
         <main>
             <div class="px-6">
-                <div class="grid grid-cols-2 items-center justify-center gap-6">
+                <%- include('partials/components/hr.ejs') %>
+                <div class="grid grid-cols-2 items-center justify-center gap-6 mb-8">
                     <a href="/constructors/<%= model.constructor.id %>" class="justify-self-end">
                         <img src="<%= model.constructor.logoPath %>" alt="<%= model.constructor.name %> logo" class="w-40 h-40">
                     </a>
@@ -14,7 +15,6 @@
                       <p class="font-medium"><%= model.year %></p>
                     </div>
                   </div>
-                <%- include('partials/components/hr.ejs') %>
                 <div>
                     <h2 class="text-2xl font-bold">Configurations in inventory</h2>
                     <ul class="pt-4">
