@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS models (
 CREATE TABLE IF NOT EXISTS trims (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name VARCHAR ( 255 ),
+  display_name VARCHAR ( 255 ),
   model_id INTEGER,
   CONSTRAINT fk_model FOREIGN KEY (model_id) REFERENCES models(id)
 );
@@ -67,15 +68,15 @@ VALUES
   ('5 Series (G60)', 2024, 2),
   ('Clio V', 2019, 3);
 
-INSERT INTO trims (name, model_id) 
+INSERT INTO trims (name, model_id, display_name) 
 VALUES
-  ('', 1),
-  ('', 2),
-  ('M Sport', 2),
-  ('génération', 3),
-  ('evolution', 3),
-  ('techno', 3),
-  ('esprit alpine', 3);
+  ('Base', 1, ''),
+  ('Base', 2, ''),
+  ('M Sport', 2, 'M Sport'),
+  ('génération', 3, 'génération'),
+  ('evolution', 3, 'evolution'),
+  ('techno', 3, 'techno'),
+  ('esprit alpine', 3, 'esprit alpine');
 
 INSERT INTO powertrains (name, type, engine_code, displacement, power, torque, engine_layout, transmission, drivetrain, model_id) 
 VALUES
