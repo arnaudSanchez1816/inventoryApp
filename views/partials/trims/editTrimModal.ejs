@@ -7,7 +7,20 @@
             <input type="hidden" name="modelId" value="<%= model.id %>" />
             <label>
                 Name
-                <input type="text" value="<%= trim.name %>" name="name" />
+                <input
+                    type="text"
+                    value="<%= trim.name %>"
+                    name="name"
+                    required
+                />
+            </label>
+            <label>
+                Display name
+                <input
+                    type="text"
+                    value="<%= trim.name %>"
+                    name="displayName"
+                />
             </label>
             <label
                 >Password

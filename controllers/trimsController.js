@@ -10,7 +10,8 @@ const { updateCarTrim, deleteCarTrim, addCarTrim } = require("../db/queries")
 // Validators
 const trimIdParamValidation = () => [param("trimId").isInt({ min: 0 }).toInt()]
 const trimBodyValidation = () => [
-    body("name").trim().isString(),
+    body("name").trim().notEmpty().isString().withMessage("Trim name invalid"),
+    body("displayName").trim().isString(),
     body("modelId")
         .trim()
         .notEmpty()
@@ -40,9 +41,9 @@ exports.postNewCarTrim = [
             }
             throw createHttpError(400, errors)
         }
-        const { modelId, name } = matchedData(req)
+        const { modelId, name, displayName } = matchedData(req)
         try {
-            await addCarTrim(modelId, name)
+            await addCarTrim(modelId, name, displayName)
             res.redirect(`/cars/${modelId}`)
         } catch (error) {
             throw createHttpError(500, error.message)
@@ -66,8 +67,8 @@ exports.updateCarTrim = [
             throw createHttpError(400, errors)
         }
         try {
-            const { modelId, trimId, name } = matchedData(req)
-            await updateCarTrim(trimId, name)
+            const { modelId, trimId, name, displayName } = matchedData(req)
+            await updateCarTrim(trimId, name, displayName)
 
             res.redirect(`/cars/${modelId}`)
         } catch (error) {

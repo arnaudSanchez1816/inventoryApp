@@ -234,19 +234,23 @@ async function searchCarModels(name) {
 }
 
 // Trims
-async function updateCarTrim(trimId, name) {
-    await db.query("UPDATE trims SET name=$2 WHERE id=$1", [trimId, name])
+async function updateCarTrim(trimId, name, displayName) {
+    await db.query("UPDATE trims SET name=$2, display_name=$3 WHERE id=$1", [
+        trimId,
+        name,
+        displayName,
+    ])
 }
 
 async function deleteCarTrim(trimId) {
     await db.query("DELETE FROM trims WHERE id=$1", [trimId])
 }
 
-async function addCarTrim(modelId, name) {
-    await db.query("INSERT INTO trims (model_id, name) VALUES ($1, $2)", [
-        modelId,
-        name,
-    ])
+async function addCarTrim(modelId, name, displayName) {
+    await db.query(
+        "INSERT INTO trims (model_id, name, display_name) VALUES ($1, $2, $3)",
+        [modelId, name, displayName]
+    )
 }
 
 // Powertrains
