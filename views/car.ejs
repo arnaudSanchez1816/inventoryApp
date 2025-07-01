@@ -2,104 +2,107 @@
 <html>
     <%- include('partials/head.ejs') %>
     <body>
-        <header>
-            <a href="/">Home</a>
-            <div>
-                <p>
-                    <img src="<%= constructor.logoPath %>" alt="<%= constructor.name %> logo" width="60" height="60">
-                    <a href="/constructors/<%= constructor.id %>"><%= constructor.name %></a>
-                </p>
-                <h1><%= model.name %></h1>
-                <p><%= model.year %></p>
-                <button id="edit-model-btn" type="button">Edit</button>
-                <button id="delete-model-btn" type="button">Delete</button>
-            </div>
-        </header>
+        <%- include('./partials/components/header.ejs') %>
         <main>
-            <div>
-                <h2>Configurations in inventory</h2>
-                <ul>
-                    <% cars.forEach((car) => { %>
-                        <li class="config-item">
-                            <p><%= car.name %></p>
-                            <p>Price : <%= car.price %></p>
-                            <p>Stock : <%= car.stock %></p>
-                            <button class="edit" type="button">Edit</button>
-                            <button class="delete" type="button">Delete</button>
-                            <%- include('partials/configurations/editConfigModal.ejs', {config:car}) %>
-                            <%- include('partials/configurations/deleteConfigModal.ejs', {config:car}) %>
-                        </li>
-                    <% }) %>
-                </ul>
-                <button id="add-configuration-btn" type="button">Add configuration</button>
-                <%- include('partials/configurations/addConfigModal.ejs', {trims:trims, model:model, powertrains:powertrains}) %>
-            </div>
-            <div class="trims">
-                <h2>Trims</h2>
-                <ul>
-                    <% trims.forEach((trim) => { %>
-                      <li class="trim-item">
-                        <div class="trim" data-id="<%= trim.id %>" data-model-id="<%= model.id %>">
-                            <p><%= trim.name || "Base" %></p>
-                            <button class="edit" type="button">Edit</button>
-                            <button class="delete" type="button">Delete</button>
-                        </div>
-                        <%- include('partials/trims/deleteTrimModal.ejs', {trim:trim, model:model}) %>
-                        <%- include('partials/trims/editTrimModal.ejs', {trim:trim, model:model}) %>
-                      </li>
-                    <% }) %>
-                </ul>
-                <button id="add-trim-btn" type="button">Add trim</button>
-                <%- include('partials/trims/addTrimModal.ejs', {model: model}) %>
-            </div>
-            <h2>Powertrains</h2>
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Engine Code</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Displacement</th>
-                            <th scope="col">Power</th>
-                            <th scope="col">Torque</th>
-                            <th scope="col">Configuration</th>
-                            <th scope="col">Transmission</th>
-                            <th scope="col">Drivetrain</th>
-                            <th scope="col">Compatible trims</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% powertrains.forEach((pt) => { %>
-                            <tr class="powertrain-item" data-pt-id="<%= pt.id %>">
-                                <th scope="row"><%= pt.name %></th>
-                                <td><%= pt.engineCode %></td>
-                                <td><%= pt.type %></td>
-                                <td><%= pt.displacement %> cc</td>
-                                <td><%= pt.power %> hp</td>
-                                <td><%= pt.torque %> N⋅m</td>
-                                <td><%= pt.engineLayout %></td>
-                                <td><%= pt.transmission %></td>
-                                <td><%= pt.drivetrain %></td>
-                                <td>
-                                    <% pt.compatibleTrims.forEach((t, index) => {%>
-                                        <% const trim = trims.filter((item) => item.id === t)[0] %>
-                                        <%= `${(index > 0 ? ", " : "")}${trim.name || "Base"}` %>
-                                    <% }) %>
-                                </td>
-                                <td><button class="edit" type="button">Edit</button></td>
-                                <td><button class="delete" type="button">Delete</button></td>
-                            </tr>
+            <div class="px-6">
+                <%- include('partials/components/hr.ejs') %>
+                <div>
+                    <h2 class="text-2xl font-bold">Configurations in inventory</h2>
+                    <ul class="pt-4">
+                        <% cars.forEach((car, index) => { %>
+                            <li class="config-item">
+                                <p class="font-bold text-xl"><%= car.name %></p>
+                                <p class="text-lg"><span class="font-medium"><%= car.price %></span> €</p>
+                                <p class="text-neutral-500 text-sm"><span class="text-base font-medium"><%= car.stock %></span> available</p>
+                                <div class="mt-2 flex gap-4">
+                                    <button class="edit btn-secondary" type="button">Edit</button>
+                                    <button class="delete btn-secondary" type="button">Delete</button>
+                                </div>
+                                <%- include('partials/configurations/editConfigModal.ejs', {config:car}) %>
+                                <%- include('partials/configurations/deleteConfigModal.ejs', {config:car}) %>
+                            </li>
+                            <% if(index < cars.length - 1) {%>
+                                <%- include('partials/components/hr.ejs') %>
+                            <% } %>
                         <% }) %>
-                    </tbody>
-                </table>
-                <button id="add-powertrain-btn" type="button">Add powertrain</button>
-                <div class="dialogs">
-                    <%- include('partials/powertrains/addPowertrainModal.ejs', {model: model, trims: trims}) %>
-                    <% powertrains.forEach((pt) => { %>
-                        <%- include('partials/powertrains/editPowertrainModal.ejs', {model:model, powertrain:pt, trims:trims}) %>
-                        <%- include('partials/powertrains/deletePowertrainModal.ejs', {model:model, powertrain:pt, trims:trims}) %>
-                    <% }) %>
+                    </ul>
+                    <button id="add-configuration-btn" type="button" class="btn-primary mt-8">Add configuration</button>
+                    <%- include('partials/configurations/addConfigModal.ejs', {trims:trims, model:model, powertrains:powertrains}) %>
+                </div>
+                <div class="trims pt-8">
+                    <h2 class="text-2xl font-bold">Trims</h2>
+                    <ul>
+                        <% trims.forEach((trim, index) => { %>
+                          <li class="trim-item">
+                            <div class="trim" data-id="<%= trim.id %>" data-model-id="<%= model.id %>">
+                                <p class="text-lg font-medium"><%= trim.name%></p>
+                                <div class="mt-4 flex gap-4">
+                                    <button class="edit btn-secondary" type="button">Edit</button>
+                                    <button class="delete btn-secondary" type="button">Delete</button>
+                                </div>
+                            </div>
+                            <% if(index < cars.length - 1) {%>
+                                <%- include('partials/components/hr.ejs') %>
+                            <% } %>
+                            <%- include('partials/trims/deleteTrimModal.ejs', {trim:trim, model:model}) %>
+                            <%- include('partials/trims/editTrimModal.ejs', {trim:trim, model:model}) %>
+                          </li>
+                        <% }) %>
+                    </ul>
+                    <button id="add-trim-btn" type="button" class="btn-primary mt-8">Add trim</button>
+                    <%- include('partials/trims/addTrimModal.ejs', {model: model}) %>
+                </div>
+                <div class="pt-8">
+                    <h2 class="text-2xl font-bold">Powertrains</h2>
+                    <div class="overflow-x-auto whitespace-nowrap pb-4 text-left">
+                        <table class="min-w-full text-left text-sm">
+                            <thead class="text-neutral-500">
+                                <tr>
+                                    <th class="px-4 py-2" scope="col">Name</th>
+                                    <th class="px-4 py-2" scope="col">Engine Code</th>
+                                    <th class="px-4 py-2" scope="col">Type</th>
+                                    <th class="px-4 py-2" scope="col">Displacement</th>
+                                    <th class="px-4 py-2" scope="col">Power</th>
+                                    <th class="px-4 py-2" scope="col">Torque</th>
+                                    <th class="px-4 py-2" scope="col">Configuration</th>
+                                    <th class="px-4 py-2" scope="col">Transmission</th>
+                                    <th class="px-4 py-2" scope="col">Drivetrain</th>
+                                    <th class="px-4 py-2" scope="col">Compatible trims</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% powertrains.forEach((pt) => { %>
+                                    <tr class="powertrain-item border-y border-neutral-950/10" data-pt-id="<%= pt.id %>">
+                                        <th class="p-4" scope="row"><%= pt.name %></th>
+                                        <td class="p-4"><%= pt.engineCode %></td>
+                                        <td class="p-4"><%= pt.type %></td>
+                                        <td class="p-4"><%= pt.displacement %> cc</td>
+                                        <td class="p-4"><%= pt.power %> hp</td>
+                                        <td class="p-4"><%= pt.torque %> N⋅m</td>
+                                        <td class="p-4"><%= pt.engineLayout %></td>
+                                        <td class="p-4"><%= pt.transmission %></td>
+                                        <td class="p-4"><%= pt.drivetrain %></td>
+                                        <td class="p-4">
+                                            <% pt.compatibleTrims.forEach((t, index) => {%>
+                                                <% const trim = trims.filter((item) => item.id === t)[0] %>
+                                                <%= `${(index > 0 ? ", " : "")}${trim.name || "Base"}` %>
+                                            <% }) %>
+                                        </td>
+                                        <td class="p-4"><button class="edit btn-secondary" type="button">Edit</button></td>
+                                        <td class="p-4"><button class="delete btn-secondary" type="button">Delete</button></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="add-powertrain-btn" type="button" class="btn-primary mt-8">Add powertrain</button>
+                    <div class="dialogs">
+                        <%- include('partials/powertrains/addPowertrainModal.ejs', {model: model, trims: trims}) %>
+                        <% powertrains.forEach((pt) => { %>
+                            <%- include('partials/powertrains/editPowertrainModal.ejs', {model:model, powertrain:pt, trims:trims}) %>
+                            <%- include('partials/powertrains/deletePowertrainModal.ejs', {model:model, powertrain:pt, trims:trims}) %>
+                        <% }) %>
+                    </div>
                 </div>
             </div>
         </main>
