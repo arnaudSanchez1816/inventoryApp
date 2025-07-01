@@ -54,7 +54,7 @@ exports.getConstructor = [
 ]
 
 exports.getConstructors = async (req, res) => {
-    const constructors = await getConstructors({ sortBy: "name" })
+    const constructors = await getConstructors({ sortBy: "name", order: "Asc" })
 
     const constructorMap = {}
     constructors.forEach((c) => {

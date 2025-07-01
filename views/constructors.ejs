@@ -2,30 +2,42 @@
 <html>
     <%- include('partials/head.ejs') %>
     <body>
-        <header>
-            <a href="/">Home</a>
-            <h1>Constructors</h1>
-        </header>
+        <%- include('./partials/components/header.ejs') %>
         <main>
-            <button id="add-new-constructor" type="button">Add new constructor</button>
-            <div>
-                <% for (const key in constructorMap) { %>
-                    <a href="/constructors/#id_<%= key %>"><%= key %></a>
-                <% } %>
-            </div>
-            <div>
-                <% for (const key in constructorMap) { %>
-                    <div>
-                        <p><%= key %></p>
-                        <ul id="id_<%= key %>">
-                            <% constructorMap[key].forEach((constructor) => { %>
-                                <li>
-                                    <a href="/constructors/<%= constructor.id %>"><%= constructor.name %></a>
-                                </li>
-                            <% }) %>
-                        </ul>
-                    </div>
-                <% } %>
+            <div class="px-4">
+                <%- include('./partials/components/hr.ejs') %>
+                <h2 class="text-2xl font-bold mb-4">Constructors</h2>
+                <button id="add-new-constructor" type="button" class="btn-primary">Add new constructor</button>
+                <div class="flex gap-2 mt-4">
+                    <% for (const key in constructorMap) { %>
+                        <a href="/constructors/#id_<%= key %>" class="block text-center w-12 h-12 font-medium text-2xl rounded-full border border-neutral-950/10 hover:bg-neutral-950/10  p-2"><%= key %></a>
+                    <% } %>
+                </div>
+                <%- include('./partials/components/hr.ejs') %>
+                <div>
+                    <% for (const key in constructorMap) { %>
+                        <div>
+                            <p class="font-medium text-2xl"><%= key %></p>
+                            <ul id="id_<%= key %>" class="my-2">
+                                <% constructorMap[key].forEach((constructor) => { %>
+                                    <li
+                                    class="hover:bg-neutral-950/5"
+                                    >
+                                        <a href="/constructors/<%= constructor.id %>"
+                                            class="flex gap-4 items-center w-full h-full p-2"
+                                        >
+                                            <img 
+                                            src="<%= constructor.logoPath %>" 
+                                            alt="<%= constructor.name %> logo" 
+                                            class="w-8 h-8"
+                                          >
+                                          <span><%= constructor.name %></span></a>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>
+                </div>
             </div>
         </main>
         <%- include('partials/constructors/addConstructorModal.ejs') %>
