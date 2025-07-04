@@ -4,17 +4,23 @@ class DeleteForm {
         this.formElement = formElement
         if (formElement) {
             formElement.addEventListener("submit", this.#onFormSubmit)
+            const deleteInput = formElement.querySelector("input.delete")
+            if (deleteInput) {
+                deleteInput.addEventListener("input", () =>
+                    deleteInput.setCustomValidity("")
+                )
+            }
         }
     }
 
     #onFormSubmit = (e) => {
         const confirmInput = e.target.querySelector("input.delete")
-        confirmInput.setCustomValidity("")
 
         const confirmInputValue = confirmInput.value
         if (confirmInputValue !== "Delete") {
-            confirmInput.setCustomValidity('Enter "Delete" to confirm deletion')
             e.preventDefault()
+            confirmInput.setCustomValidity('Enter "Delete" to confirm deletion')
+            confirmInput.reportValidity()
             return
         }
     }
