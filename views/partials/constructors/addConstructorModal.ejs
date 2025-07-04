@@ -28,32 +28,7 @@
                     }, 
                     label: "Country"})
                 %>
-                <div class="logo-input-container">
-                    <div>
-                        <label for="add-ct-logo" class="mb-2 block text-sm font-medium text-neutral-950">
-                            Logo
-                        </label>
-                        <input
-                            type="file"
-                            id="add-ct-logo"
-                            name="logo"
-                            accept="image/png, image/jpeg, image/svg+xml"
-                            class="logo-input block w-full cursor-pointer rounded-lg border border-neutral-950/10 bg-white text-sm text-neutral-950 file:bg-neutral-950/90 focus:outline-none"
-                            required
-                        />
-                    </div>
-                    <p class="text-neutral-500">SVG, PNG or JPG (MAX. 2MB)</p>
-                    <div>
-                        <img
-                            alt="Constructor logo preview"
-                            title="Constructor logo preview"
-                            class="logo-preview hidden"
-                            width="60"
-                            height="60"
-                        />
-                        <p class="logo-error"></p>
-                    </div>
-                </div>
+                <%- include('./logoInput.ejs', {id : "add-ct-logo"}) %>
             </div>
             <%- include('../components/hr.ejs') %>
             <div class="mb-4">

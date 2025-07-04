@@ -1,51 +1,57 @@
-<dialog class="edit-constructor-dialog">
-    <section>
+<dialog class="edit-constructor-dialog dialog-container">
+    <section class="dialog-content">
         <header>
-            <h1>Edit constructor</h1>
+            <h1 class="text-2xl font-bold">
+                Edit constructor <span><%= ct.name %></span>
+            </h1>
         </header>
+        <%- include('../components/hr.ejs') %>
         <form
             action="/constructors/<%= ct.id %>/update"
             method="post"
             enctype="multipart/form-data"
         >
-            <label>
-                Name
-                <input type="text" value="<%= ct.name %>" name="name" />
-            </label>
-            <label>
-                Country
-                <input type="text" value="<%= ct.country %>" name="country" />
-            </label>
-            <div class="logo-input-container">
-                <label>
-                    Logo
-                    <input
-                        type="file"
-                        name="logo"
-                        accept="image/png, image/jpeg, image/svg+xml"
-                        class="logo-input"
-                    />
-                </label>
-                <div>
-                    <img
-                        src="<%= ct.logoPath %>"
-                        alt="Constructor logo preview"
-                        title="Constructor logo preview"
-                        class="logo-preview"
-                        width="60"
-                        height="60"
-                    />
-                    <p class="logo-error"></p>
-                </div>
+            <div class="grid gap-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-ct-${ct.id}-name`,
+                        type:"text",
+                        name:"name",
+                        value: ct.name,
+                        required:true
+                    }, 
+                    label: "Name"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-ct-${ct.id}-country`,
+                        type:"text",
+                        name:"country",
+                        value: ct.country,
+                        required:true
+                    }, 
+                    label: "Country"})
+                %>
+                <%- include('./logoInput.ejs', {id : ct.id, logoSrc: ct.logoPath}) %>
             </div>
-            <label
-                >Password
-                <input type="password" name="password" />
-            </label>
-            <button class="dialog-btn submit" type="submit">Edit</button>
-            <button class="dialog-btn cancel close" type="button">
-                Cancel
-            </button>
+            <%- include('../components/hr.ejs') %>
+            <div class="mb-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-ct-${ct.id}-password`,
+                        type:"password",
+                        name:"password",
+                        required:true
+                    }, 
+                    label: "Password"})
+                %>
+            </div>
+            <div class="flex gap-4 justify-end">
+                <button class="dialog-btn submit btn-primary" type="submit">Edit</button>
+                <button class="dialog-btn cancel close btn-secondary" type="button">
+                    Cancel
+                </button>
+            </div>
         </form>
     </section>
 </dialog>
