@@ -202,7 +202,12 @@ async function updateConstructor({ id, name, country, logoPath }) {
 }
 
 async function deleteConstructor(id) {
-    await db.query("DELETE FROM constructors WHERE id = $1", [id])
+    const { rows } = await db.query(
+        "DELETE FROM constructors WHERE id = $1 RETURNING logo_path;",
+        [id]
+    )
+
+    return rows[0].logoPath
 }
 
 async function searchConstructors(name) {
