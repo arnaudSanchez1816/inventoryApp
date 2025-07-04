@@ -168,7 +168,7 @@ exports.deleteConstructor = [
         try {
             const { id } = matchedData(req)
             const logoPath = await db.deleteConstructor(id)
-            fs.unlink(`./public/images/constructors/${logoPath}`)
+            await fs.unlink(`./public/images/constructors/${logoPath}`)
             res.redirect("/")
         } catch (error) {
             throw createHttpError(500, error.message)
