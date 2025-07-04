@@ -21,5 +21,11 @@
         <% if (input.required) { %>
             required
         <% } %>
+        <% if (input.min) { %>
+            min="<%= input.min %>"
+        <% } %>
+        <% if (input.max) { %>
+            max="<%= input.max %>"
+        <% } %>
     />
 </div>
