@@ -12,6 +12,9 @@ const {
     deleteCarModel,
     updateCarModel,
     getCarModels,
+    addNewConfiguration,
+    updateConfiguration,
+    deleteConfiguration,
 } = require("../db/queries")
 
 //Validators
@@ -175,13 +178,19 @@ exports.addNewCarConfiguration = [
     body(["trimId", "powertrainId", "price", "stock"])
         .notEmpty()
         .isInt({ min: 0 }),
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors)
         }
-        const { modelId, trimId, powertrainId, price, stock } = matchedData(req)
-        res.send("POST new car config")
+        try {
+            const queryData = matchedData(req)
+            await addNewConfiguration(queryData)
+            const { modelId } = queryData
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 
@@ -190,25 +199,37 @@ exports.updateCarConfiguration = [
     body(["trimId", "powertrainId", "price", "stock"])
         .notEmpty()
         .isInt({ min: 0 }),
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors)
         }
-        const { modelId, trimId, powertrainId, pric, stock } = matchedData(req)
-        res.send("POST update car config")
+        try {
+            const queryData = matchedData(req)
+            await updateConfiguration(queryData)
+            const { modelId } = queryData
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
 
 exports.deleteCarConfiguration = [
     param("modelId").isInt({ min: 0 }),
     body(["trimId", "powertrainId"]).notEmpty().isInt({ min: 0 }),
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             throw createHttpError(400, errors)
         }
-        const { modelId, trimId, powertrainId } = matchedData(req)
-        res.send("POST delete car config")
+        try {
+            const queryData = matchedData(req)
+            await deleteConfiguration(queryData)
+            const { modelId } = queryData
+            res.redirect(`/cars/${modelId}`)
+        } catch (error) {
+            throw createHttpError(500, error.message)
+        }
     },
 ]
