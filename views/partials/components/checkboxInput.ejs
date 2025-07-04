@@ -1,0 +1,22 @@
+<div class="flex items-center">
+    <input
+        type="checkbox"
+        id="<%= input.id %>"
+        class="w-4 h-4 text-neutral-950/80 bg-white border-neutral-950/10 rounded-sm focus:ring-blue-500 focus:ring-2 <%= input.class || "" %>"
+        <% if (input.name) { %>
+            name="<%= input.name %>"
+        <% } %>
+        <% if (input.value) { %>
+            value="<%= input.value %>"
+        <% } %>
+        <% if (input.required) { %>
+            required
+        <% } %>
+    />
+    <label
+        for="<%= input.id %>"
+        class="ms-2 text-sm font-medium text-neutral-950"
+    >
+        <%= label %>
+    </label>
+</div>
