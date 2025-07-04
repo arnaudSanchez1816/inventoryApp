@@ -1,26 +1,54 @@
-<dialog class="delete-pt-dialog" data-pt-id="<%= powertrain.id %>">
-    <section>
+<dialog
+    class="delete-pt-dialog dialog-container"
+    data-pt-id="<%= powertrain.id %>"
+>
+    <section class="dialog-content">
         <header>
-            <h1>Delete powertrain</h1>
+            <h1 class="text-2xl font-bold">Delete powertrain <span><%= powertrain.name %></span></h1>
         </header>
+        <%- include('../components/hr.ejs') %>
         <div>
             <form
                 action="/powertrains/delete/<%= powertrain.id %>"
                 method="post"
             >
-                <input type="hidden" name="modelId" value="<%= model.id %>" />
-                <label>
-                    <p>Enter "Delete" to confirm deletion</p>
-                    <input type="text" placeholder="Delete" class="delete" />
-                </label>
-                <label
-                    >Password
-                    <input type="password" name="password" />
-                </label>
-                <button class="dialog-btn submit" type="submit">Delete</button>
-                <button class="dialog-btn cancel close" type="button">
-                    Cancel
-                </button>
+                <div class="grid gap-4">
+                    <input
+                        type="hidden"
+                        name="modelId"
+                        value="<%= model.id %>"
+                    />
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:"delete-pt-confirm",
+                            type:"text",
+                            placeholder: "Delete",
+                            class: "delete",
+                            required:true
+                        }, 
+                        label: "Enter \"Delete\" to confirm deletion"})
+                    %>
+                </div>
+                <%- include('../components/hr.ejs') %>
+                <div class="mb-4">
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:"delete-pt-password",
+                            type:"password",
+                            name:"password",
+                            required:true
+                        }, 
+                        label: "Password"})
+                    %>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button class="dialog-btn submit btn-primary" type="submit">
+                        Delete
+                    </button>
+                    <button class="dialog-btn cancel close btn-secondary" type="button">
+                        Cancel
+                    </button>
+                </div>
             </form>
         </div>
     </section>
