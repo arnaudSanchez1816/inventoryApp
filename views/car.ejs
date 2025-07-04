@@ -4,17 +4,25 @@
     <body>
         <%- include('./partials/components/header.ejs') %>
         <main>
-            <div class="px-6">
+            <div class="px-4">
                 <%- include('partials/components/hr.ejs') %>
-                <div class="grid grid-cols-2 items-center justify-center gap-6 mb-8">
-                    <a href="/constructors/<%= model.constructor.id %>" class="justify-self-end">
-                        <img src="<%= model.constructor.logoPath %>" alt="<%= model.constructor.name %> logo" class="w-40 h-40">
-                    </a>
-                    <div class="flex flex-col items-center justify-self-start">
-                      <h2 class="text-2xl font-medium"><%= model.name %></h2>
-                      <p class="font-medium"><%= model.year %></p>
+                <div>
+                    <div class="grid grid-cols-2 items-center justify-center gap-6 mb-8">
+                        <a href="/constructors/<%= model.constructor.id %>" class="justify-self-end">
+                            <img src="<%= model.constructor.logoPath %>" alt="<%= model.constructor.name %> logo" class="w-40 h-40">
+                        </a>
+                        <div class="flex flex-col items-center justify-self-start">
+                            <h2 class="text-2xl font-medium"><%= model.name %></h2>
+                            <p class="font-medium"><%= model.year %></p>
+                        </div>
                     </div>
-                  </div>
+                    <div>
+                        <div class="flex gap-4 justify-center mt-4">
+                            <button id="edit-model-btn" class="btn-secondary grow-0 max-w-" type="button">Edit</button>
+                            <button id="delete-model-btn" class="btn-secondary grow-0 max-w-fit" type="button">Delete</button>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <h2 class="text-2xl font-bold">Inventory</h2>
                     <ul class="mt-4">
@@ -42,7 +50,7 @@
                     <h2 class="text-2xl font-bold">Trims</h2>
                     <ul class="mt-4">
                         <% trims.forEach((trim, index) => { %>
-                          <li class="trim-item">
+                            <li class="trim-item">
                             <div class="trim" data-id="<%= trim.id %>" data-model-id="<%= model.id %>">
                                 <p class="text-lg font-medium"><%= trim.name%></p>
                                 <div class="mt-4 flex gap-4">
@@ -55,7 +63,7 @@
                             <% } %>
                             <%- include('partials/trims/deleteTrimModal.ejs', {trim:trim, model:model}) %>
                             <%- include('partials/trims/editTrimModal.ejs', {trim:trim, model:model}) %>
-                          </li>
+                            </li>
                         <% }) %>
                     </ul>
                     <button id="add-trim-btn" type="button" class="btn-primary mt-8">Add trim</button>
