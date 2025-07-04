@@ -1,24 +1,44 @@
-<dialog class="delete-trim-dialog" data-trim-id="<%= trim.id %>">
-    <section>
+<dialog
+    class="delete-trim-dialog dialog-container"
+    data-trim-id="<%= trim.id %>"
+>
+    <section class="dialog-content">
         <header>
-            <h1>Delete trim</h1>
+            <h1 class="text-2xl font-bold">Delete trim <%= trim.name %></h1>
         </header>
-        <div>
-            <form action="/trims/delete/<%= trim.id %>" method="post">
-                <input type="hidden" name="modelId" value="<%= model.id %>" />
-                <label>
-                    <p>Enter "Delete" to confirm deletion</p>
-                    <input type="text" placeholder="Delete" class="delete" />
-                </label>
-                <label
-                    >Password
-                    <input type="password" name="password" />
-                </label>
-                <button class="dialog-btn submit" type="submit">Delete</button>
-                <button class="dialog-btn cancel close" type="button">
+        <%- include('../components/hr.ejs') %>
+        <form action="/trims/delete/<%= trim.id %>" method="post">
+            <input type="hidden" name="modelId" value="<%= model.id %>" />
+            <div class="grid gap-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"delete-trim-confirm",
+                        type:"text",
+                        placeholder: "Delete",
+                        class: "delete",
+                        required:true
+                    },
+                    label: "Enter \"Delete\" to confirm deletion"})
+                %>
+            </div>
+            <%- include('../components/hr.ejs') %>
+            <div class="mb-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"delete-ct-password",
+                        type:"password",
+                        name:"password",
+                        required:true
+                    }, 
+                    label: "Password"})
+                %>
+            </div>
+            <div>
+                <button class="dialog-btn submit btn-primary" type="submit">Delete</button>
+                <button class="dialog-btn cancel close btn-secondary" type="button">
                     Cancel
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     </section>
 </dialog>
