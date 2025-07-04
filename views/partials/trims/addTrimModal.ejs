@@ -1,28 +1,54 @@
-<dialog id="add-trim-dialog">
-    <section>
+<dialog id="add-trim-dialog" class="dialog-container">
+    <section class="dialog-content">
         <header>
-            <h1>Add trim</h1>
+            <h1 class="text-2xl font-bold">Add trim</h1>
         </header>
-        <div>
-            <form action="/trims/add" method="post">
+        <%- include('../components/hr.ejs') %>
+        <form action="/trims/add" method="post">
+            <div>
                 <input type="hidden" name="modelId" value="<%= model.id %>" />
-                <label>
-                    Name
-                    <input type="text" name="name" required />
-                </label>
-                <label>
-                    Display name
-                    <input type="text" name="displayName" />
-                </label>
-                <label
-                    >Password
-                    <input type="password" name="password" />
-                </label>
-                <button class="dialog-btn submit" type="submit">Add</button>
-                <button class="dialog-btn cancel close" type="button">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"add-trim-name",
+                        type:"text",
+                        name:"name",
+                        required:true
+                    }, 
+                    label: "Name"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"add-trim-display-name",
+                        type:"text",
+                        name:"displayName",
+                        required:true
+                    }, 
+                    label: "Display name"})
+                %>
+            </div>
+            <%- include('../components/hr.ejs') %>
+            <div class="mb-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"add-trim-password",
+                        type:"password",
+                        name:"password",
+                        required:true
+                    }, 
+                    label: "Password"})
+                %>
+            </div>
+            <div class="flex justify-end gap-4">
+                <button class="dialog-btn submit btn-primary" type="submit">
+                    Add
+                </button>
+                <button
+                    class="dialog-btn cancel close btn-secondary"
+                    type="button"
+                >
                     Cancel
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     </section>
 </dialog>
