@@ -1,26 +1,58 @@
-<dialog class="add-model-dialog">
-    <section>
+<dialog class="add-model-dialog dialog-container">
+    <section class="dialog-content">
         <header>
-            <h1>Add model</h1>
+            <h1 class="text-2xl font-bold">Add model</h1>
         </header>
+        <%- include('../components/hr.ejs') %>
         <form action="/cars/new" method="post">
-            <input type="hidden" name="constructorId" value="<%= ct.id %>" />
-            <label>
-                Name
-                <input type="text" name="name" />
-            </label>
-            <label>
-                Year
-                <input type="number" name="year" min="0" maxlength="4" />
-            </label>
-            <label
-                >Password
-                <input type="password" name="password" />
-            </label>
-            <button class="dialog-btn submit" type="submit">Add</button>
-            <button class="dialog-btn cancel close" type="button">
-                Cancel
-            </button>
+            <div class="grid gap-4">
+                <input
+                    type="hidden"
+                    name="constructorId"
+                    value="<%= ct.id %>"
+                />
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"add-model-name",
+                        type:"text",
+                        name:"name",
+                        required:true
+                    }, 
+                    label: "Name"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"add-model-year",
+                        type:"number",
+                        name:"year",
+                        required:true,
+                        min:"0",
+                        max:"9999",
+                        value: new Date().getFullYear()
+                    }, 
+                    label: "Year"})
+                %>
+            </div>
+            <%- include('../components/hr.ejs') %>
+            <div class="mb-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"add-model-password",
+                        type:"password",
+                        name:"password",
+                        required:true
+                    }, 
+                    label: "Password"})
+                %>
+            </div>
+            <div class="flex gap-4 justify-end">
+                <button class="dialog-btn submit btn-primary" type="submit">
+                    Add
+                </button>
+                <button class="dialog-btn cancel close btn-secondary" type="button">
+                    Cancel
+                </button>
+            </div>
         </form>
     </section>
 </dialog>
