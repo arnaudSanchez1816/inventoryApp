@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <%- include('partials/head.ejs') %>
-    <body>
+    <body class="text-neutral-950">
+        <div class="flex flex-col h-svh bg-white">
         <%- include('./partials/components/header.ejs') %>
         <main>
             <div class="px-4">
@@ -126,7 +127,8 @@
         <%- include('./partials/components/footer.ejs') %>
         <%- include('partials/models/editCarModelModal.ejs', {model:model}) %>
         <%- include('partials/models/deleteCarModelModal.ejs', {model:model}) %>
+        </div>
+        <script type="module" src="/javascripts/car.js" defer>
+        </script>
     </body>
-    <script type="module" src="/javascripts/car.js" defer>
-    </script>
 </html>

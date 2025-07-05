@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <%- include('partials/head.ejs') %>
-    <body>
+    <body class="text-neutral-950">
+        <div class="flex flex-col h-svh bg-white">
         <%- include('./partials/components/header.ejs') %>
         <main>
             <div class="px-4">
@@ -42,6 +43,7 @@
         </main>
         <%- include('./partials/components/footer.ejs') %>
         <%- include('partials/constructors/addConstructorModal.ejs') %>
+        </div>
         <script type="module" src="/javascripts/constructors.js" defer></script>
     </body>
 </html>
