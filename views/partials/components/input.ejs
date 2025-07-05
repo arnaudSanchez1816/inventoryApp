@@ -8,7 +8,11 @@
     <input
         type="<%= input.type || "text" %>"
         id="<%= input.id %>"
-        class="block w-full rounded-lg border border-neutral-950/10 bg-white p-2.5 text-sm text-neutral-950 focus:border-blue-500 focus:ring-blue-500 <%= input.class || "" %>"
+        <% if (!input.readOnly) { %>
+            class="block w-full rounded-lg border border-neutral-950/10 bg-white p-2.5 text-sm text-neutral-950 focus:border-blue-500 focus:ring-blue-500 <%= input.class || "" %>"
+        <% } else { %>
+            class="bg-gray-100 border border-neutral-950/10 text-neutral-950 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed <%= input.class || "" %>"
+        <% } %>
         <% if (input.name) { %>
             name="<%= input.name %>"
         <% } %>
@@ -20,6 +24,11 @@
         <% } %>
         <% if (input.required) { %>
             required
+        <% } %>
+        <% if (input.readOnly) { %>
+            readonly
+            disabled
+            aria-label="disabled input"
         <% } %>
         <% if (input.min) { %>
             min="<%= input.min %>"
