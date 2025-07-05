@@ -1,3 +1,19 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+    <%- include('partials/head.ejs') %>
+    <body class="text-neutral-950">
+      <div class="flex flex-col h-svh bg-white">
+        <%- include('./partials/components/header.ejs') %>
+        <main>
+          <div class="px-4">
+            <%- include('./partials/components/hr.ejs') %>
+            <h2 class="text-2xl text-red-900 font-bold mb-2"><%= message %></h2>
+            <h3 class="text-xl font-medium mb-4"><%= status %></h3>
+            <% if (locals.error) { %>
+                <pre class="whitespace-pre-wrap"><%= error.stack %></pre>
+            <% } %>
+        </main>
+        <%- include('./partials/components/footer.ejs') %>
+      </div>
+    </body>
+</html>
