@@ -12,6 +12,9 @@
         <% if (input.required) { %>
             required
         <% } %>
+        <% if (input.isChecked) { %>
+            checked
+        <% } %>
     />
     <label
         for="<%= input.id %>"

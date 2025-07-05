@@ -1,70 +1,141 @@
-<dialog class="edit-pt-dialog" data-pt-id="<%= powertrain.id %>">
-    <section>
-        <header>
-            <h1>Edit powertrain</h1>
+<dialog class="edit-pt-dialog dialog-container" data-pt-id="<%= powertrain.id %>">
+    <section class="dialog-content">
+        <header class="text-2xl font-bold">
+            <h1>Edit powertrain <span><%= powertrain.name %></span></h1>
         </header>
-        <div>
-            <form action="/powertrains/edit/<%= powertrain.id %>" method="post">
+        <%- include('../components/hr.ejs') %>
+        <form action="/powertrains/edit/<%= powertrain.id %>" method="post">
+            <div class="grid gap-4 md:grid-cols-2">
                 <input type="hidden" name="modelId" value="<%= model.id %>" />
-                <label>
-                    Name
-                    <input type="text" name="name" value="<%= powertrain.name %>" required />
-                </label>
-                <label>
-                    Engine code
-                    <input type="text" name="engineCode" value="<%= powertrain.engineCode %>" required />
-                </label>
-                <label>
-                    Type
-                    <input type="text" name="type" value="<%= powertrain.type %>" required />
-                </label>
-                <label>
-                    Displacement
-                    <input type="number" name="displacement" value="<%= powertrain.displacement %>" min="0" required />
-                </label>
-                <label>
-                    Power
-                    <input type="number" name="power" value="<%= powertrain.power %>" min="0" required />
-                </label>
-                <label>
-                    Torque
-                    <input type="number" name="torque" value="<%= powertrain.torque %>" min="0" required />
-                </label>
-                <label>
-                    Engine layout
-                    <input type="text" name="engineLayout" value="<%= powertrain.engineLayout %>" required />
-                </label>
-                <label>
-                    Transmission
-                    <input type="text" name="transmission" value="<%= powertrain.transmission %>" required />
-                </label>
-                <label>
-                    Drivetrain
-                    <input type="text" name="drivetrain" value="<%= powertrain.drivetrain %>" required />
-                </label>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-name`,
+                        type:"text",
+                        name:"name",
+                        required:true,
+                        value: powertrain.name
+                    }, 
+                    label: "Name"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-engine-code`,
+                        type:"text",
+                        name:"engineCode",
+                        required:true,
+                        value: powertrain.engineCode
+                    }, 
+                    label: "Engine code"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-type`,
+                        type:"text",
+                        name:"type",
+                        required:true,
+                        value: powertrain.type
+                    }, 
+                    label: "Type"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-displacement`,
+                        type:"number",
+                        name:"displacement",
+                        required:true,
+                        min:"0",
+                        value: powertrain.displacement
+                    }, 
+                    label: "Displacement"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-power`,
+                        type:"number",
+                        name:"power",
+                        required:true,
+                        min:"0",
+                        value: powertrain.power
+                    }, 
+                    label: "Power"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-torque`,
+                        type:"number",
+                        name:"torque",
+                        required:true,
+                        min:"0",
+                        value: powertrain.torque
+                    }, 
+                    label: "Torque"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-engine-layout`,
+                        type:"text",
+                        name:"engineLayout",
+                        required:true,
+                        value: powertrain.engineLayout
+                    }, 
+                    label: "Engine layout"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-transmission`,
+                        type:"text",
+                        name:"transmission",
+                        required:true,
+                        value: powertrain.transmission
+                    }, 
+                    label: "Transmission"})
+                %>
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-drivetrain`,
+                        type:"text",
+                        name:"drivetrain",
+                        required:true,
+                        value: powertrain.drivetrain
+                    }, 
+                    label: "Drivetrain"})
+                %>
                 <fieldset>
-                    <legend>Compatible trims</legend>
-                    <% trims.forEach(trim => {%>
-                        <% const isChecked = powertrain.compatibleTrims.some((t) => t === trim.id) %>
-                        <label>
-                            <input type="checkbox" name="trims" 
-                            <% if (isChecked) { %>
-                                checked
-                            <% } %>
-                            value="<%= trim.id %>"/>
-                            <%= trim.name %>
-                        </label>
-                    <% }) %>
+                    <legend class="mb-2 block text-sm font-medium text-neutral-950">Compatible trims</legend>
+                    <div class="grid gap-2 grid-cols-2">
+                        <% trims.forEach(trim => {%>
+                            <%- include('../components/checkboxInput.ejs', {
+                                input: {
+                                    id:`edit-pt-${powertrain.id}-compatible-trims-${trim.id}`,
+                                    name:"trims",
+                                    value: trim.id,
+                                    isChecked: powertrain.compatibleTrims.some((t) => t === trim.id)
+                                },
+                                label: trim.name
+                                })
+                            %>
+                        <% }) %>
+                    </div>
                 </fieldset>
-                <label
-                    >Password
-                    <input type="password" name="password" />
-                </label>
-                <button class="dialog-btn submit" type="submit">Edit</button>
-                <button class="dialog-btn cancel close" type="button">
+            </div>
+            <%- include('../components/hr.ejs') %>
+            <div class="mb-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`edit-pt-${powertrain.id}-password`,
+                        type:"password",
+                        name:"password",
+                        required:true
+                    }, 
+                    label: "Password"})
+                %>
+            </div>
+            <div class="flex gap-4 justify-end">
+                <button class="dialog-btn submit btn-primary" type="submit">Edit</button>
+                <button class="dialog-btn cancel close btn-secondary" type="button">
                     Cancel
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     </section>
 </dialog>
