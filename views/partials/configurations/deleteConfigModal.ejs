@@ -1,13 +1,13 @@
-<dialog class="delete-config-dialog">
-    <section>
+<dialog class="delete-config-dialog dialog-container">
+    <section class="dialog-content">
         <header>
-            <h1>Delete configuration</h1>
+            <h1 class="text-2xl font-bold">
+                Delete configuration <span><%= config.name %></span>
+            </h1>
         </header>
-        <div>
-            <form
-                action="/cars/<%= config.modelId %>/config/delete"
-                method="post"
-            >
+        <%- include('../components/hr.ejs') %>
+        <form action="/cars/<%= config.modelId %>/config/delete" method="post">
+            <div>
                 <input
                     type="hidden"
                     name="trimId"
@@ -18,19 +18,39 @@
                     name="powertrainId"
                     value="<%= config.powertrainId %>"
                 />
-                <label>
-                    <p>Enter "Delete" to confirm deletion</p>
-                    <input type="text" placeholder="Delete" class="delete" />
-                </label>
-                <label
-                    >Password
-                    <input type="password" name="password" />
-                </label>
-                <button class="dialog-btn submit" type="submit">Delete</button>
-                <button class="dialog-btn cancel close" type="button">
+                <div class="grid gap-4">
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:`delete-config-${config.trimId}-${config.powertrainId}-confirm`,
+                            type:"text",
+                            placeholder: "Delete",
+                            class: "delete",
+                            required:true
+                        }, 
+                        label: "Enter \"Delete\" to confirm deletion"})
+                    %>
+                </div>
+            </div>
+            <%- include('../components/hr.ejs') %>
+            <div class="mb-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:`delete-config-${config.trimId}-${config.powertrainId}-password`,
+                        type:"password",
+                        name:"password",
+                        required:true
+                    }, 
+                    label: "Password"})
+                %>
+            </div>
+            <div class="flex justify-end gap-4">
+                <button class="dialog-btn submit btn-primary" type="submit">
+                    Delete
+                </button>
+                <button class="dialog-btn cancel close btn-secondary" type="button">
                     Cancel
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     </section>
 </dialog>
