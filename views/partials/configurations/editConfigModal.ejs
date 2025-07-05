@@ -1,67 +1,84 @@
-<dialog class="edit-config-dialog">
-    <section>
+<dialog class="edit-config-dialog dialog-container">
+    <section class="dialog-content">
         <header>
-            <h1>Edit configuration</h1>
+            <h1 class="text-2xl font-bold">Edit configuration <span><%= config.name %></span></h1>
         </header>
+        <%- include('../components/hr.ejs') %>
         <div>
             <form
                 action="/cars/<%= config.modelId %>/config/update"
                 method="post"
             >
-                <input
+                <div class="grid gap-4">
+                    <input
                     type="hidden"
                     name="trimId"
                     value="<%= config.trimId %>"
-                />
-                <input
-                    type="hidden"
-                    name="powertrainId"
-                    value="<%= config.powertrainId %>"
-                />
-                <label>
-                    Trim
-                    <input
-                        type="text"
-                        value="<%= config.trim.name %>"
-                        readonly
                     />
-                </label>
-                <label>
-                    Powertrain
                     <input
-                        type="text"
-                        value="<%= config.powertrain.name %>"
-                        readonly
+                        type="hidden"
+                        name="powertrainId"
+                        value="<%= config.powertrainId %>"
                     />
-                </label>
-                <label>
-                    Price
-                    <input
-                        type="number"
-                        name="price"
-                        min="0"
-                        value="<%= config.price %>"
-                        required
-                    />
-                </label>
-                <label>
-                    Stock
-                    <input
-                        type="number"
-                        name="stock"
-                        min="0"
-                        value="<%= config.stock %>"
-                        required
-                    />
-                </label>
-                <label>
-                    Password
-                    <input type="password" name="password" />
-                </label>
-                <button class="dialog-btn submit" type="submit">Add</button>
-                <button class="dialog-btn cancel close" type="button">
-                    Cancel
-                </button>
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:`edit-config-${config.trimId}-${config.powertrainId}-trim`,
+                            type:"text",
+                            value:config.trim.name,
+                            readOnly: true
+                        }, 
+                        label: "Trim"})
+                    %>
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:`edit-config-${config.trimId}-${config.powertrainId}-pt`,
+                            type:"text",
+                            value:config.powertrain.name,
+                            readOnly: true
+                        }, 
+                        label: "Powertrain"})
+                    %>
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:"add-config-price",
+                            type:"number",
+                            name:"price",
+                            required:true,
+                            min:"0",
+                            value: config.price
+                        }, 
+                        label: "Price"})
+                    %>
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:"add-config-stock",
+                            type:"number",
+                            name:"stock",
+                            required:true,
+                            min:"0",
+                            value: config.stock
+                        }, 
+                        label: "Stock"})
+                    %>
+                </div>
+                <%- include('../components/hr.ejs') %>
+                <div class="mb-4">
+                    <%- include('../components/input.ejs', {
+                        input: {
+                            id:`edit-config-${config.trimId}-${config.powertrainId}-password`,
+                            type:"password",
+                            name:"password",
+                            required:true
+                        }, 
+                        label: "Password"})
+                    %>
+                </div>
+                <div class="flex gap-4 justify-end">
+                    <button class="dialog-btn submit btn-primary" type="submit">Edit</button>
+                    <button class="dialog-btn cancel close btn-secondary" type="button">
+                        Cancel
+                    </button>
+                </div>
             </form>
         </div>
     </section>
