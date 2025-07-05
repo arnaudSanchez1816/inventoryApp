@@ -1,15 +1,42 @@
-<dialog class="delete-model-dialog">
-    <section>
+<dialog class="delete-model-dialog dialog-container">
+    <section class="dialog-content">
         <header>
-            <h1>Delete model</h1>
+            <h1 class="text-2xl font-bold">Delete model <span><%= model.name %></span></h1>
         </header>
+        <%- include('../components/hr.ejs') %>
         <form action="/cars/<%= model.id %>/delete" method="post">
-            <%- include('../components/deleteConfirmationInput.ejs') %> <%-
-            include('../components/passwordInput.ejs') %>
-            <button class="dialog-btn submit" type="submit">Delete</button>
-            <button class="dialog-btn cancel close" type="button">
-                Cancel
-            </button>
+            <div class="grid gap-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"delete-model-confirm",
+                        type:"text",
+                        placeholder: "Delete",
+                        class: "delete",
+                        required:true
+                    }, 
+                    label: "Enter \"Delete\" to confirm deletion"})
+                %>
+            </div>
+            <%- include('../components/hr.ejs') %>
+            <div class="mb-4">
+                <%- include('../components/input.ejs', {
+                    input: {
+                        id:"delete-model-password",
+                        type:"password",
+                        name:"password",
+                        required:true
+                    }, 
+                    label: "Password"})
+                %>
+            </div>
+            <div class="flex justify-end gap-4">
+                <button class="dialog-btn submit btn-primary" type="submit">
+                    Delete
+                </button>
+                <button class="dialog-btn cancel close btn-secondary" type="button">
+                    Cancel
+                </button>
+            </div>
         </form>
     </section>
 </dialog>
