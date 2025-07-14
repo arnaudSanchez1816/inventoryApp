@@ -5,10 +5,11 @@ exports.convertConstructorLogoPath = (constructor) => {
         return constructor
     }
 
-    constructor.logoPath = path.join(
-        process.env.CONSTRUCTORS_IMAGE_PATH,
-        constructor.logoPath
-    )
+    constructor.logoPath = this.logoFilenameToLogoPath(constructor.logoPath)
 
     return constructor
+}
+
+exports.logoFilenameToLogoPath = (filename) => {
+    return path.join(process.env.CONSTRUCTORS_IMAGE_PATH, filename)
 }

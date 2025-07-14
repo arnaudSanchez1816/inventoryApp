@@ -11,6 +11,7 @@ const multer = require("multer")
 const path = require("path")
 const fs = require("fs/promises")
 const { validatePassword } = require("../middlewares/passwordValidation")
+const { logoFilenameToLogoPath } = require("../utils/utils")
 
 const MAX_FILE_SIZE = 2000000 // 2 MB
 const LOGO_FILE_TYPES = ["image/jpeg", "image/png", "image/svg+xml"]
@@ -103,11 +104,12 @@ exports.postNewConstructor = [
                 logoFileExtension: extension,
             })
 
-            const logoPath = `${constructorId}${extension}`
-            await fs.writeFile(
-                `./public/images/constructors/${logoPath}`,
-                file.buffer
+            const logoFilename = `${constructorId}${extension}`
+            const logoPath = path.join(
+                process.env.PERSISTENT_DATA_PATH,
+                logoFilenameToLogoPath(logoFilename)
             )
+            await fs.writeFile(logoPath, file.buffer)
             res.redirect(`/constructors/${constructorId}`)
         } catch (error) {
             throw createHttpError(500, error)
@@ -134,19 +136,32 @@ exports.postUpdateConstructor = [
         try {
             const { id, name, country } = matchedData(req)
             const constructorData = { id, name, country }
+            let previousCtDetails = null
             if (file) {
                 const extension = path.extname(file.originalname)
-                const logoPath = `${id}${extension}`
-                constructorData.logoPath = logoPath
+                const logoFilename = `${id}${extension}`
+                constructorData.logoFilename = logoFilename
+                previousCtDetails = await db.getConstructorDetails(id)
             }
 
             await db.updateConstructor(constructorData)
 
             if (file) {
-                await fs.writeFile(
-                    `./public/images/constructors/${constructorData.logoPath}`,
-                    file.buffer
+                if (previousCtDetails) {
+                    // delete previous logo file
+                    await fs.unlink(
+                        path.join(
+                            process.env.PERSISTENT_DATA_PATH,
+                            previousCtDetails.logoPath
+                        )
+                    )
+                }
+
+                const logoPath = path.join(
+                    process.env.PERSISTENT_DATA_PATH,
+                    logoFilenameToLogoPath(constructorData.logoFilename)
                 )
+                await fs.writeFile(logoPath, file.buffer)
             }
 
             res.redirect(`/constructors/${id}`)
@@ -167,8 +182,12 @@ exports.deleteConstructor = [
 
         try {
             const { id } = matchedData(req)
-            const logoPath = await db.deleteConstructor(id)
-            await fs.unlink(`./public/images/constructors/${logoPath}`)
+            const logoFilename = await db.deleteConstructor(id)
+            const logoPath = path.join(
+                process.env.PERSISTENT_DATA_PATH,
+                logoFilenameToLogoPath(logoFilename)
+            )
+            await fs.unlink(logoPath)
             res.redirect("/")
         } catch (error) {
             throw createHttpError(500, error.message)

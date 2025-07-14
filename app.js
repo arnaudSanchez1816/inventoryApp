@@ -5,6 +5,14 @@ var path = require("path")
 var cookieParser = require("cookie-parser")
 var logger = require("morgan")
 var debug = require("debug")("inventoryapp:server")
+const fs = require("fs/promises")
+
+// Set PERSISTENT_DATA_PATH default value to /public directory if needed
+if (!process.env.PERSISTENT_DATA_PATH) {
+    const dataPath = path.join(__dirname, "public")
+    console.log(`Set PERSISTENT_DATA_PATH to ${dataPath}`)
+    process.env.PERSISTENT_DATA_PATH = dataPath
+}
 
 var indexRouter = require("./routes/index")
 var constructorsRouter = require("./routes/constructors")
@@ -12,6 +20,7 @@ var carsRouter = require("./routes/cars")
 var searchRouter = require("./routes/search")
 var trimsRouter = require("./routes/trims")
 var powertrainsRouter = require("./routes/powertrains")
+const { logoFilenameToLogoPath } = require("./utils/utils")
 
 var app = express()
 
@@ -23,6 +32,25 @@ app.use(logger("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+// Custom static file serving for constructors logo, they are served from a persistent
+// mounted disk outside /public to keep data between deployment in production
+app.get(
+    `${process.env.CONSTRUCTORS_IMAGE_PATH}:location`,
+    async function (req, res, next) {
+        const location = req.params.location
+        const imagePath = path.join(
+            process.env.PERSISTENT_DATA_PATH,
+            logoFilenameToLogoPath(location)
+        )
+        try {
+            await fs.access(imagePath)
+            res.sendFile(imagePath)
+        } catch (error) {
+            debug(error)
+            next()
+        }
+    }
+)
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use("/", indexRouter)
